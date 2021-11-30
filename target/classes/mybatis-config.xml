@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">	<!-- Mybatis 설정 파일임을 명시하기 위한 DTD 선언 -->
+  
+  <configuration>
+  	<!-- 
+  	
+  		Mybatis에서 resultMap 혹은 AS를 사용하지 않아도
+  		_형식의 DB 컬럼명과 camelcase의 자바변수를 매치하여 준다.
+  	
+  	 -->
+  	<settings>
+ 		<setting name="mapUnderscoreToCamelCase" value="true"/> 	
+  	</settings>
+  
+  </configuration>
