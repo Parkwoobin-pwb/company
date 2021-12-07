@@ -178,9 +178,9 @@
 	        </div>  
 	   </nav>
 	<div align="center" style="padding-top:110px">
-		<form action="boardWrite" method="post"  name="BoardDTO" id="BoardDTO"><!-- onsubmit="return validateCheck()" -->
+		<form action="boardReplyWrite" method="post"  name="BoardDTO" id="BoardDTO"><!-- onsubmit="return validateCheck()" -->
 			<div align="center">
-				 <h1 class="mt-4">게시글쓰기</h1>
+				 <h1 class="mt-4">답글쓰기</h1>
 				<br>
 			</div>
 			<table class="table" border="1" style="width:800px;">

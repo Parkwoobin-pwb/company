@@ -56,6 +56,7 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
+					<input type="button" class="btn btn-primary btn-sm" value="Reply" onclick="location.href='boardReplyWrite?num=${bdto.num}'">
 					<input type="button" value="modify" onclick="location.href='boardUpdate?num=${bdto.num}'">
 					<input type="button" value="delete" onclick="location.href='boardDelete?num=${bdto.num}'">
 					<input type="button" value="move Board" onclick="location.href='boardList'">

@@ -40,7 +40,9 @@ public class BoardController {
 	private BoardService boardService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String main() {
+	public String main(Model model) {
+		long time = (long) System.currentTimeMillis();
+		model.addAttribute("time", time);
 		return "board/main";
 	}
 
@@ -60,6 +62,22 @@ public class BoardController {
 		boardService.insertBoard(bdto);
 		return "redirect:/boardList";
 	}
+	
+	
+	@RequestMapping(value = "/boardReplyWrite" , method = RequestMethod.GET)
+	public String boardReplyWrite(@RequestParam("num") int num , Model model) throws Exception{
+		model.addAttribute("bdto", boardService.selectOne(num));
+		return "board/bReply";
+	}
+	
+	
+	
+	@RequestMapping(value = "/boardReplyWrite" , method = RequestMethod.POST)
+	public String boardReplyWrite(BoardDTO bdto) throws Exception{
+		boardService.insertReplyBoard(bdto);
+		return "redirect:/boardList";	
+	}
+	
 
 	@RequestMapping(value = "/boardList")
 	public String boardList(@RequestParam(name = "onePageViewCount", defaultValue = "10") int onePageViewCount,
@@ -277,7 +295,7 @@ public class BoardController {
 			
 		
 		//헤더 생성
-		row = sheet.createRow(rowNo++);
+		row = sheet.createRow(rowNo++); 
 		cell = row.createCell(0);
 		cell.setCellStyle(headStyle);
 		cell.setCellValue("넘버");
@@ -322,6 +340,11 @@ public class BoardController {
 			cell.setCellValue(boardDTO.getContent());
 			
 		}
+		
+		for(int i =0; i < boardService.selectBoardList(condMap).size(); i++) {
+			sheet.autoSizeColumn(i);
+		}
+		
 		
 		response.setContentType("ms-vnd/excel");
 		response.setHeader("Content-Disposition", "attachment;filename="+makeFileName);

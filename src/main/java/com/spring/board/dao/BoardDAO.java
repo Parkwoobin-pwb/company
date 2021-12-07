@@ -12,8 +12,10 @@ public interface BoardDAO {
 	public BoardDTO selectOne(int num) throws Exception;
 	public void increaseReadCount(int num) throws Exception;
 	public void insert(BoardDTO bdto) throws Exception;
+	public void insertReplyBoard(BoardDTO bdto) throws Exception;
 	public void update(BoardDTO bdto) throws Exception;
 	public void delete(int num) throws Exception;
+	public void updateBoardReplyStep(BoardDTO bdto) throws Exception;
 	public BoardDTO validateUserCheck(BoardDTO bdto) throws Exception;
 	public void makeDummyData(List<BoardDTO> dataLists)throws Exception;
 	public int checkWriter(String writer) throws Exception;

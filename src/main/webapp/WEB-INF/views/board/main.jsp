@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <title>Main</title>
 </head>
-<script src="/newspaper/mobile/js/jquery-3.2.1.min.js"></script>
-<script src="<c:url value="/js/egovframework/mbl/cmm/jquery-1.11.2.min.js" />"></script>
+<script src="/newspaper/mobile/js/jquery-3.4.1.min.js"></script>
+<script src="<c:url value="/js/egovframework/mbl/cmm/jquery-1.9.1.min.js" />"></script>
 <script>
 	$(document).ready(function() {
 		
@@ -19,6 +19,7 @@
 	<div align="center">
 		<div align="center">
 			<h1 id="set">welcome to our WebSite!!</h1>
+			<p>controller time : ${time }</p>
 			<input type="button" value="read List" onclick="location.href='boardList'">
 		</div>
 	</div>

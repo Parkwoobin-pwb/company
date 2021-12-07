@@ -11,10 +11,11 @@ public interface BoardService {
 	public int getAllBoardCount(Map<String, String> searchCountInfo) throws Exception;
 	public BoardDTO selectOne(int num) throws Exception;
 	public void insertBoard(BoardDTO bdto) throws Exception;
+	public void insertReplyBoard(BoardDTO bdto) throws Exception;
 	public boolean update(BoardDTO bdto) throws Exception;
 	public boolean delete(BoardDTO bdto) throws Exception;
-	public void makeDummyData() throws Exception;
 	public int checkWriter(String writer) throws Exception;
+	public void makeDummyData() throws Exception;
 	public List<BoardDTO> selectBoardList(Map<String, Object>condMap) throws Exception;
 	
 }

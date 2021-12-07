@@ -25,23 +25,25 @@
 	<!-- 게시글 작성 쿼리 -->
 	<insert id="insertBoard" parameterType="com.spring.board.dto.BoardDTO">
 		INSERT INTO 
-					BOARD(
-						WRITER,
-						EMAIL,
-						SUBJECT,
-						PASSWORD,
-						REG_DATE,
-						READ_COUNT,
-						CONTENT
-					)
-			VALUES(
-				#{writer},
-				#{email},
-				#{subject},
-				#{password},
-				now(),
-				#{readCount},
-				#{content})
+					BOARD
+		VALUES(
+					(SELECT
+							IFNULL(MAX(NUM)+1,1) <!-- 만약 넘버가 널이면 1이 나오고 아니면 맥스값에 + 1 더하는것 -->
+					FROM
+							BOARD AS B),
+					#{writer},
+					#{email},
+					#{subject},
+					#{password},
+					now(),
+					(SELECT
+							IFNULL(MAX(REF) + 1, 1) <!-- 만약 REF가 널이면 1이 나오고 아니면 맥스값에 +1 더하는것 -->
+					FROM
+							BOARD AS B),
+					1,
+					1,
+					0,
+					#{content})
 				
 	</insert>
 	
@@ -56,7 +58,8 @@
 						FROM
 								BOARD
 						ORDER BY
-								NUM DESC
+								REF DESC,
+								RE_STEP
 						LIMIT
 								#{startBoardIdx}, #{onePageViewCount}
 					</when>
@@ -69,7 +72,8 @@
 								SUBJECT LIKE CONCAT('%', #{searchWord}, '%') OR
 								WRITER  LIKE CONCAT('%', #{searchWord}, '%')
 						ORDER BY
-								NUM DESC
+								REF DESC,
+								RE_STEP
 						LIMIT
 								#{startBoardIdx}, #{onePageViewCount}
 					</otherwise>
@@ -88,7 +92,8 @@
 							SUBJECT LIKE CONCAT('%', #{searchWord}, '%')
 						</if>
 				ORDER BY
-						NUM DESC
+						REF DESC,
+						RE_STEP
 				LIMIT
 						#{startBoardIdx}, #{onePageViewCount}
 			</otherwise>
@@ -160,6 +165,8 @@
 				NUM=#{num}
 	</update>
 	
+	
+	
 	<update id="updateBoard" parameterType="com.spring.board.dto.BoardDTO">
 		UPDATE BOARD SET
 				SUBJECT =#{subject},
@@ -168,6 +175,8 @@
 				NUM=#{num}
 	</update>
 	
+	
+	
 	<delete id="deleteBoard" parameterType="int">
 		DELETE FROM 
 				BOARD
@@ -175,6 +184,9 @@
 				NUM=#{num}
 	</delete>
 	
+	
+	
+	<!-- 더미리스트를 만드는 쿼리 -->
 	<insert id="makeDummyData">
 			INSERT INTO
 					BOARD
@@ -187,11 +199,16 @@
 				#{bdto.subject},
 				#{bdto.password},
 				now(),
+				#{bdto.ref}, 
+				#{bdto.reStep}, 
+				#{bdto.reLevel}, 
 				#{bdto.readCount},
 				#{bdto.content})
 			</foreach>
 	</insert>
 	
+	
+	<!-- 중복아이디 체크 -->
 	<select id="checkWriter" resultType="int">
 		<![CDATA[
 		SELECT
@@ -203,6 +220,42 @@
 		]]>
 	</select>
 	
+	
+	
+	<!-- 스텝올려주는 쿼리 -->
+	<update id="updateBoardReplyStep">
+		<![CDATA[
+				UPDATE
+						BOARD
+				SET
+						RE_STEP = RE_STEP + 1
+				WHERE
+						REF =#{ref} AND RE_STEP > #{reStep}
+		]]>
+	</update>
+	
+	
+	<insert id="insertReplyBoard" parameterType="com.spring.board.dto.BoardDTO">
+		INSERT INTO
+				BOARD
+		VALUES(
+				(SELECT
+						MAX(NUM) + 1
+				FROM
+						BOARD AS B),
+				#{writer},
+				#{email},
+				#{subject},
+				#{password},
+				now(),
+				#{ref},
+				#{reStep} + 1,
+				#{reLevel} + 1,
+				0,
+				#{content})
+	</insert>
+	
+	<!--엑셀리스트 출력하는 쿼리-->
 	<select id="selectBoardList" resultType="com.spring.board.dto.BoardDTO" parameterType="java.util.Map">
 		SELECT
 				NUM,
@@ -215,7 +268,9 @@
 				BOARD
 		ORDER BY
 				NUM DESC	
-</select>
+	</select>
+	
+	
 	
 	
 </mapper>

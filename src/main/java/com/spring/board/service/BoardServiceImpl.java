@@ -105,6 +105,9 @@ public class BoardServiceImpl implements BoardService {
 			temp.setEmail(email);
 			temp.setSubject(subject);
 			temp.setPassword(password);
+			temp.setRef(i);
+			temp.setReLevel(1);
+			temp.setReStep(1);
 			temp.setReadCount(0);
 			temp.setContent(content);
 			
@@ -130,6 +133,17 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardDTO> selectBoardList(Map<String, Object> condMap) throws Exception {
 		
 		return boardDAO.selectBoardList(condMap);
+	}
+
+	@Override
+	public void insertReplyBoard(BoardDTO bdto) throws Exception {
+		
+		   
+		  boardDAO.updateBoardReplyStep(bdto);
+		  System.out.println("insert success");
+		  boardDAO.insertReplyBoard(bdto);
+		 
+		
 	}
 
 

@@ -88,6 +88,22 @@ public class BoardDAOImpl implements BoardDAO {
 		return sqlsession.selectList("com.spring.mapper.BoardMapper.selectBoardList", condMap);
 	}
 
+	@Override
+	public void insertReplyBoard(BoardDTO bdto) throws Exception {
+		
+		System.out.println("dao result : "+bdto.getRef());
+		sqlsession.insert("com.spring.mapper.BoardMapper.insertReplyBoard",bdto);
+	
+		
+	}
+
+	@Override
+	public void updateBoardReplyStep(BoardDTO bdto) throws Exception {
+		
+		sqlsession.update("com.spring.mapper.BoardMapper.updateBoardReplyStep", bdto);
+		
+	}
+
 
 	
 	

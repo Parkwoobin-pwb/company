@@ -13,6 +13,9 @@ public class BoardDTO {
 	private String subject;
 	private String password;
 	private Date regDate;
+	private int ref;
+	private int reStep;
+	private int reLevel;
 	private int readCount;
 	private String content;
 	
@@ -53,7 +56,24 @@ public class BoardDTO {
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
 	}
-
+	public int getRef() {
+		return ref;
+	}
+	public void setRef(int ref) {
+		this.ref = ref;
+	}
+	public int getReStep() {
+		return reStep;
+	}
+	public void setReStep(int reStep) {
+		this.reStep = reStep;
+	}
+	public int getReLevel() {
+		return reLevel;
+	}
+	public void setReLevel(int reLevel) {
+		this.reLevel = reLevel;
+	}
 	public int getReadCount() {
 		return readCount;
 	}
@@ -67,10 +87,6 @@ public class BoardDTO {
 		this.content = content;
 	}
 	
-	
-	
-	
-		
 	
 	
 	

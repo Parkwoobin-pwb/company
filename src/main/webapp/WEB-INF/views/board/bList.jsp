@@ -80,6 +80,7 @@
                             2) 검색기능 적용<br>
                             3) 페이징기능 적용<br>
                             4) 데이터더미 만들기 > <a href="${contextPath}/makeDummyData">테스트용 더미 만들기</a> <br>
+                            5) 계층형 댓글 적용 <br>
                         </div>
                     </div>
                             <i class="fas fa-table mr-1"></i>
@@ -98,24 +99,34 @@
                                  			</div>		                               
                               			</div>
                               		</div>
-                              		 <c:set var="order" value="${totalBoardCount - (currentPageNumber-1) * onePageViewCount}"/>
                               		<table class="table" style="" border="1">
                               			<thead class='thead-dark' class="form-controll">
 											<tr align ="center">
-												<th>번호</th>
-												<th>제목</th>
-												<th>작성자</th>
-												<th>작성일</th>
-												<th>조회수</th>
+												<th>ORDER</th>
+												<th>SUBJECT</th>
+												<th>WRITER</th>
+												<th>REG_DATE</th>
+												<th>READ_COUNT</th>
+												<th>ORDER</th>
 											</tr>
 										</thead>
+                              		    <c:set var="order" value="${totalBoardCount - (currentPageNumber-1) * onePageViewCount}"/>
 										<c:forEach var="bdto" items="${boardList }">
 											<tr>
-												<td>${bdto.num }</td>
-												<td><a href="boardInfo?num=${bdto.num}">${bdto.subject }</a></td>
+												<td><fmt:parseNumber integerOnly="true" value="${order}"/></td>	<c:set var="order" value="${order - 1}"/>
+												<td>
+													 <c:if test="${bdto.reStep > 1}">
+														<c:forEach var="j" begin="0" end="${(bdto.reLevel-1 ) * 5 }">
+															&nbsp;
+														</c:forEach>
+													 	»
+													 </c:if>
+													<a href="${contextPath }/boardInfo?num=${bdto.num}"> ${bdto.subject}</a>
+												</td>
 												<td><a href="boardInfo?num=${bdto.num}">${bdto.writer }</a></td>
 												<td><fmt:formatDate value="${bdto.regDate }" pattern="yyyy-MM-dd"/></td>
 												<td>${bdto.readCount }</td>
+												<td>${order }</td>
 											</tr>
 										</c:forEach>
 										<tr>
