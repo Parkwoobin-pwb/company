@@ -50,27 +50,20 @@ public class BoardController {
 		String url = "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&sq=&o=&q=%EC%98%A4%EB%8A%98%EB%82%A0%EC%94%A8";
 		Document doc = Jsoup.connect(url).get();
 		
-		
 		Elements e1 = doc.getElementsByAttributeValue("class", "info_detail");
 		Element e2 = e1.get(1);
 		Elements e4 = doc.getElementsByAttributeValue("class","info_weather");
 		Elements e5 = doc.getElementsByAttributeValue("class","txt_temp");
 		Elements yesterday = doc.getElementsByAttributeValue("class", "txt_desc");
-		Elements micro = doc.getElementsByAttributeValue("class", "txt_tit");
-		Elements nongdo = doc.getElementsByAttributeValue("class", "dust_type1");
+		Elements nongdo = doc.getElementsByAttributeValue("class", "dl_weather");
 
 		
 		System.out.println(yesterday);//어제날씨
 		String yesterDay = yesterday.text();
 		
 		
-		Element micro2 = micro.get(2);
-		String controller = micro2.text();
-		System.out.println(controller);//미세먼지
-		
-		Element nongdo2 = nongdo.get(0);
-		String controller2 = nongdo2.text();
-		System.out.println(controller2);//농도
+		String controller2 = nongdo.text();
+		System.out.println(controller2);//풍속,습도,미세먼지 농도
 		
 		
 		Element today = e5.get(2);
@@ -78,10 +71,9 @@ public class BoardController {
 		
 		
 		long time = (long) System.currentTimeMillis();
-		model.addAttribute("time", time);
+		
 		model.addAttribute("today", todayWeather);
 		model.addAttribute("yesterDay", yesterDay);
-		model.addAttribute("controller", controller);
 		model.addAttribute("controller2", controller2);
 		return "board/main";
 	}

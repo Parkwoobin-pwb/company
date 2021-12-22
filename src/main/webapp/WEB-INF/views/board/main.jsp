@@ -22,10 +22,10 @@
 	<div align="center">
 		<div align="center">
 			<h1 id="set">welcome to our WebSite!!</h1>
-			<p>controller time : ${time }</p>
-			<p id="yesterDay">${yesterDay }</p>
+			
 			<p id="weather">오늘의 날씨는 ${today }입니다.</p>
-			<p id="micro">${controller } 농도는 ${controller2} 입니다. </p>
+			<p id="yesterDay">${yesterDay }</p>
+			<p id="micro"> ${controller2} 입니다. </p>
 			<input type="button" value="read List" onclick="location.href='boardList'">
 		</div>
 	</div>
