@@ -43,6 +43,8 @@
 					1,
 					1,
 					0,
+					#{address},
+					#{addressDetail},
 					#{content})
 				
 	</insert>
@@ -73,7 +75,7 @@
 								WRITER  LIKE CONCAT('%', #{searchWord}, '%')
 						ORDER BY
 								REF DESC,
-								RE_STEP
+								RE_STEP 
 						LIMIT
 								#{startBoardIdx}, #{onePageViewCount}
 					</otherwise>
@@ -93,7 +95,7 @@
 						</if>
 				ORDER BY
 						REF DESC,
-						RE_STEP
+						RE_STEP 
 				LIMIT
 						#{startBoardIdx}, #{onePageViewCount}
 			</otherwise>
@@ -203,6 +205,8 @@
 				#{bdto.reStep}, 
 				#{bdto.reLevel}, 
 				#{bdto.readCount},
+				#{bdto.address},
+				#{bdto.addressDetail},
 				#{bdto.content})
 			</foreach>
 	</insert>
@@ -230,29 +234,44 @@
 				SET
 						RE_STEP = RE_STEP + 1
 				WHERE
-						REF =#{ref} AND RE_STEP > #{reStep}
+						REF =#{ref}  AND RE_STEP >#{reStep}
 		]]>
 	</update>
 	
+	<!-- <update id="updateBoardReplyStep">
+		<![CDATA[
+				UPDATE
+						BOARD
+				SET
+						RE_STEP = RE_STEP + 1
+				WHERE
+						REF =#{ref}
+		]]>
+	</update> -->
 	
-	<insert id="insertReplyBoard" parameterType="com.spring.board.dto.BoardDTO">
-		INSERT INTO
-				BOARD
-		VALUES(
-				(SELECT
-						MAX(NUM) + 1
-				FROM
-						BOARD AS B),
-				#{writer},
-				#{email},
-				#{subject},
-				#{password},
-				now(),
-				#{ref},
-				#{reStep} + 1,
-				#{reLevel} + 1,
-				0,
-				#{content})
+	
+	<insert id="insertReplyBoard" >
+		
+			INSERT INTO
+					BOARD
+			VALUES(
+					(SELECT
+							MAX(NUM) + 1
+					FROM
+							BOARD AS B),
+					#{writer},
+					#{email},
+					#{subject},
+					#{password},
+					now(),
+					#{ref},
+					#{reStep} + 1,
+					#{reLevel} + 1,
+					0,
+					#{address},
+					#{addressDetail},
+					#{content})
+		
 	</insert>
 	
 	<!--엑셀리스트 출력하는 쿼리-->

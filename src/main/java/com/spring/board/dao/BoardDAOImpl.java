@@ -91,7 +91,7 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public void insertReplyBoard(BoardDTO bdto) throws Exception {
 		
-		System.out.println("dao result : "+bdto.getRef());
+		
 		sqlsession.insert("com.spring.mapper.BoardMapper.insertReplyBoard",bdto);
 	
 		

@@ -17,9 +17,25 @@ public class BoardDTO {
 	private int reStep;
 	private int reLevel;
 	private int readCount;
+	private String address;
+	private String addressDetail;
 	private String content;
 	
 	
+	
+	public String getAddressDetail() {
+		return addressDetail;
+	}
+	public void setAddressDetail(String addressDetail) {
+		this.addressDetail = addressDetail;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	public int getNum() {
 		return num;
 	}

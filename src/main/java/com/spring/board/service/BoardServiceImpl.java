@@ -59,6 +59,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int getAllBoardCount(Map<String, String> searchCountInfo) throws Exception {
 		
+		
 		return boardDAO.getAllBoardCount(searchCountInfo);
 	}
 
@@ -75,6 +76,7 @@ public class BoardServiceImpl implements BoardService {
 		String email;
 		String password;
 		String subject;
+		String address;
 		String content;
 		
 		BoardDTO temp = null;
@@ -86,12 +88,14 @@ public class BoardServiceImpl implements BoardService {
 			password ="1234";
 			subject = "";
 			email = "";
+			address = "";
 			content ="";
 			
 			for(int j = 0; j < 7; j++) {
-				writer += array[ran.nextInt(array.length)];
+				writer  += array[ran.nextInt(array.length)];
 				subject += array[ran.nextInt(array.length)];
 				content += array[ran.nextInt(array.length)];
+				address += array[ran.nextInt(array.length)];
 				if(j < 4) {
 					email += array[ran.nextInt(array.length)];
 				}
@@ -109,6 +113,7 @@ public class BoardServiceImpl implements BoardService {
 			temp.setReLevel(1);
 			temp.setReStep(1);
 			temp.setReadCount(0);
+			temp.setAddress(address);
 			temp.setContent(content);
 			
 			dummyDataList.add(temp);
@@ -140,7 +145,8 @@ public class BoardServiceImpl implements BoardService {
 		
 		   
 		  boardDAO.updateBoardReplyStep(bdto);
-		  System.out.println("insert success");
+		  
+		  
 		  boardDAO.insertReplyBoard(bdto);
 		 
 		

@@ -20,6 +20,10 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.mybatis.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,9 +44,45 @@ public class BoardController {
 	private BoardService boardService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String main(Model model) {
+	public String main(Model model) throws Exception {
+		
+		//날씨부분 크롤링
+		String url = "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&sq=&o=&q=%EC%98%A4%EB%8A%98%EB%82%A0%EC%94%A8";
+		Document doc = Jsoup.connect(url).get();
+		
+		
+		Elements e1 = doc.getElementsByAttributeValue("class", "info_detail");
+		Element e2 = e1.get(1);
+		Elements e4 = doc.getElementsByAttributeValue("class","info_weather");
+		Elements e5 = doc.getElementsByAttributeValue("class","txt_temp");
+		Elements yesterday = doc.getElementsByAttributeValue("class", "txt_desc");
+		Elements micro = doc.getElementsByAttributeValue("class", "txt_tit");
+		Elements nongdo = doc.getElementsByAttributeValue("class", "dust_type1");
+
+		
+		System.out.println(yesterday);//어제날씨
+		String yesterDay = yesterday.text();
+		
+		
+		Element micro2 = micro.get(2);
+		String controller = micro2.text();
+		System.out.println(controller);//미세먼지
+		
+		Element nongdo2 = nongdo.get(0);
+		String controller2 = nongdo2.text();
+		System.out.println(controller2);//농도
+		
+		
+		Element today = e5.get(2);
+		String todayWeather = today.text();//태그에 감싸져있는 값들을 가져오는.text함수
+		
+		
 		long time = (long) System.currentTimeMillis();
 		model.addAttribute("time", time);
+		model.addAttribute("today", todayWeather);
+		model.addAttribute("yesterDay", yesterDay);
+		model.addAttribute("controller", controller);
+		model.addAttribute("controller2", controller2);
 		return "board/main";
 	}
 
@@ -74,6 +114,7 @@ public class BoardController {
 	
 	@RequestMapping(value = "/boardReplyWrite" , method = RequestMethod.POST)
 	public String boardReplyWrite(BoardDTO bdto) throws Exception{
+	
 		boardService.insertReplyBoard(bdto);
 		return "redirect:/boardList";	
 	}

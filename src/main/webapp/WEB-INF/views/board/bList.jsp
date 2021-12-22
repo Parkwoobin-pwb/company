@@ -48,7 +48,6 @@
 	
 </script>
 </head>
-<body>
 	<body>
 	   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
 	        <a class="navbar-brand" href="boardList">Woobin Board</a>

@@ -215,6 +215,7 @@
 							var editor = CKEDITOR.replace('content',{
 								language:'ko',
 				              	height:'600px',
+				              	
 				               removePlugins: 'elementspath', 
 				                  resize_enabled: false,
 				                  cloudServices_tokenUrl:'',
@@ -226,6 +227,9 @@
 				 
 				<tr>
 					<td colspan="2" align="center">
+			            <input type="hidden" name="ref" value="${bdto.ref}">
+                        <input type="hidden" name="reStep" value="${bdto.reStep}">
+                        <input type="hidden" name="reLevel" value="${bdto.reLevel}">
 						<input type="button" id="checkUp" value="등록하기">
 						<input type="reset" value="초기화">
 						<input type="button" value="목록보기" onclick="location.href='boardList'"> 
