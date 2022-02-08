@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!--mapper임을 명시하기 위한 DTD 선언 -->
+		
+<!-- namespace 항상 고유해야함 -->		
+<mapper namespace="com.spring.mapper.userMapper">
+
+	
+	<!-- 회원가입 쿼리 -->
+	<insert id="insertUser" parameterType="com.spring.board.dto.UserDTO">
+		INSERT INTO 
+					USER
+		VALUES(
+					(SELECT
+							IFNULL(MAX(MEMBER_NO)+1,1) <!-- 만약 넘버가 널이면 1이 나오고 아니면 맥스값에 + 1 더하는것 -->
+					FROM
+							USER AS U),
+					#{memberId},
+					#{memberPw},
+					#{memberName},
+					#{memberGender},
+					#{memberBirthY},
+					#{memberBirthM},
+					#{memberBirthD},
+					#{tel1},
+					#{tel2},
+					#{tel3},
+					#{hp1},
+					#{hp2},
+					#{hp3},
+					#{email1},
+					#{email2},
+					#{email3},
+					#{emailstsYn},
+					#{roadAddress},
+					#{jibunAddress},
+					#{namujiAddress},
+					now())
+				
+	</insert>
+	
+	<!-- 중복아이디 체크 -->
+	<select id="checkId" resultType="int">
+		<![CDATA[
+		SELECT
+				COUNT(*)
+		FROM
+				USER
+		WHERE
+				MEMBER_ID =#{memberId}
+		]]>
+	</select>
+	
+	<!-- 로그인쿼리-->
+	
+	<select id="login" parameterType="com.spring.board.dto.UserDTO" resultType="com.spring.board.dto.UserDTO">
+		<![CDATA[
+		SELECT
+				*
+		FROM
+				USER
+		WHERE
+				MEMBER_ID =#{memberId}
+		]]>
+	</select>
+	
+	
+</mapper>

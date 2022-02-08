@@ -104,6 +104,12 @@ public class BoardDAOImpl implements BoardDAO {
 		
 	}
 
+	@Override
+	public List<BoardDTO> selectBoardListMain() throws Exception {
+		
+		return sqlsession.selectList("com.spring.mapper.BoardMapper.getAllboardList");
+	}
+
 
 	
 	

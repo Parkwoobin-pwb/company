@@ -102,6 +102,15 @@
 		</choose>
 	</select>
 	
+	<!-- 2022-01-21 selectAllList -->
+	<select id="getAllboardList" resultType="com.spring.board.dto.BoardDTO" >
+		SELECT
+				*
+		FROM
+				BOARD
+			
+	</select>
+	
 	<!-- 게시글의 개수를 반환하는 쿼리 -->
 	<select id="getAllBoardCount" resultType="int">
 		<choose>

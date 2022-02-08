@@ -17,5 +17,6 @@ public interface BoardService {
 	public int checkWriter(String writer) throws Exception;
 	public void makeDummyData() throws Exception;
 	public List<BoardDTO> selectBoardList(Map<String, Object>condMap) throws Exception;
+	public List<BoardDTO> selectBoarListMain()throws Exception;
 	
 }

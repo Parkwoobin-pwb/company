@@ -152,6 +152,12 @@ public class BoardServiceImpl implements BoardService {
 		
 	}
 
+	@Override
+	public List<BoardDTO> selectBoarListMain() throws Exception {
+		
+		return boardDAO.selectBoardListMain();
+	}
+
 
 
 

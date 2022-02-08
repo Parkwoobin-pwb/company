@@ -20,7 +20,7 @@ public interface BoardDAO {
 	public void makeDummyData(List<BoardDTO> dataLists)throws Exception;
 	public int checkWriter(String writer) throws Exception;
 	public List<BoardDTO> selectBoardList(Map<String, Object> condMap) throws Exception;
-	
+	public List<BoardDTO> selectBoardListMain()throws Exception;
 	
 	
 }

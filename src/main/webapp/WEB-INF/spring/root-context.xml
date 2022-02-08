@@ -25,6 +25,23 @@
 	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
 	    <property name="contentType" value="application/json;charset=UTF-8"></property>
 	</bean>
+	
+	
+	<!-- 자바 메일 보내기 기능 -->
+	<bean id ="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com"/>
+		<property name="port" value="587"/>
+		<property name="username" value="dnlsvkxld1@gmail.com"/>
+		<property name="password" value="golfzon1!"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
 
 	
 	

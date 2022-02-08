@@ -1,5 +1,6 @@
 package com.spring.board.controller;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,8 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -24,57 +25,79 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.mybatis.logging.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mysql.cj.Session;
 import com.spring.board.dto.BoardDTO;
+import com.spring.board.dto.UserDTO;
 import com.spring.board.service.BoardService;
+import com.spring.board.service.UserService;
+
+import javax.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.core.io.FileSystemResource;
 
 @Controller
 public class BoardController {
+	
+	@Autowired
+	private JavaMailSenderImpl mailsender;
+	
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private UserDTO userDTO;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Model model) throws Exception {
 		
-		//날씨부분 크롤링
+		//날씨 크롤링
 		String url = "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&sq=&o=&q=%EC%98%A4%EB%8A%98%EB%82%A0%EC%94%A8";
-		Document doc = Jsoup.connect(url).get();
+		Document doc = Jsoup.connect(url).get();		
 		
-		Elements e1 = doc.getElementsByAttributeValue("class", "info_detail");
-		Element e2 = e1.get(1);
-		Elements e4 = doc.getElementsByAttributeValue("class","info_weather");
 		Elements e5 = doc.getElementsByAttributeValue("class","txt_temp");
 		Elements yesterday = doc.getElementsByAttributeValue("class", "txt_desc");
 		Elements nongdo = doc.getElementsByAttributeValue("class", "dl_weather");
+		Elements img = doc.getElementsByTag("img");
 
-		
-		System.out.println(yesterday);//어제날씨
-		String yesterDay = yesterday.text();
-		
-		
-		String controller2 = nongdo.text();
-		System.out.println(controller2);//풍속,습도,미세먼지 농도
-		
-		
 		Element today = e5.get(2);
 		String todayWeather = today.text();//태그에 감싸져있는 값들을 가져오는.text함수
 		
+		String yesterDay = yesterday.text();
+		System.out.println(yesterday);//어제날씨
 		
-		long time = (long) System.currentTimeMillis();
 		
+		String misemeonji = nongdo.text();
+		System.out.println(misemeonji);//풍속,습도,미세먼지 농도
+		
+		
+		Element img2 = img.get(0);
+		
+		List<BoardDTO> boardList = boardService.selectBoarListMain();
+		
+		
+		
+		
+		model.addAttribute("img", img2);
 		model.addAttribute("today", todayWeather);
 		model.addAttribute("yesterDay", yesterDay);
-		model.addAttribute("controller2", controller2);
+		model.addAttribute("misemeonji", misemeonji);
+		model.addAttribute("resultList", boardList);
 		return "board/main";
 	}
 
@@ -386,6 +409,84 @@ public class BoardController {
 		wb.close();
 		
 	}
-
+	
+	@RequestMapping(value = "/sendEmail")
+	public String sendEmail(BoardDTO bdto)throws Exception{
+		System.out.println("불렸는지 확인");
+		try {
+			MimeMessage message = mailsender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+			
+			messageHelper.setFrom("dnqlsvkxld@gmai.com");
+			messageHelper.setTo(bdto.getEmail());
+			messageHelper.setTo(bdto.getSubject());
+			messageHelper.setText(bdto.getContent());
+			
+			mailsender.send(message);
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return "redirect:/board/bInfo";
+	}
+	
+	
+	@RequestMapping(value="/login", method = RequestMethod.GET)
+	public ModelAndView loginForm() throws Exception{
+		return new ModelAndView("board/bLogin");
+		
+	}
+	
+	
+	@RequestMapping(value="/join", method = RequestMethod.GET)
+	public ModelAndView joinForm() throws Exception{
+		return new ModelAndView("board/bJoin");
+		
+	}
+	
+	@RequestMapping(value="/join", method = RequestMethod.POST)
+	public String joinForm(UserDTO udto) throws Exception{
+		userService.insertUser(udto);
+		System.out.println(udto.getMemberName());
+		return "redirect:/login";
+	}
+	
+	
+	@RequestMapping(value="/checkId", method={RequestMethod.GET, RequestMethod.POST}, produces = "application/text; charset=utf-8")
+	@ResponseBody
+	public String writerId(HttpServletRequest request) throws Exception{
+		String id = request.getParameter("id");
+		int result = userService.checkId(id);
+		System.out.println("controller  : " + result);
+		
+		
+		return Integer.toString(result);
+	}
+	
+	@RequestMapping(value="/login.do", method= RequestMethod.POST)
+	public ModelAndView login(@RequestParam Map<String, String>loginMap, HttpServletRequest request) {
+		
+		ModelAndView mv = new ModelAndView();
+		userDTO = userService.login(loginMap);
+		
+		HttpSession session = request.getSession();
+		if(userDTO != null) {
+			session.setAttribute("isLogin", true);
+			session.setAttribute("memberInfo", userDTO);
+			System.out.println("login");
+			mv.setViewName("redirect:/boardList");
+		}else {
+			mv.addObject("message","로그인실패");
+			mv.setViewName("redirect:/login");
+			System.out.println("loginFail");
+			
+		}
+		return mv;
+		
+		
+		
+	}
+	
 
 }

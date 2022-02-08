@@ -1,13 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <title>Info</title>
 <meta charset="UTF-8">
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link rel="stylesheet" href="/resource/css/bootstrap.css">
-
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+	function emailSend() {
+		
+		var result = confirm("메일을 보내시겠습니까?");
+		if(result == true){
+			alert("개발중에 있습니다.");
+			
+			$.ajax({
+				url : "${contextPath}/sendEmail",
+				type : "POST",
+				data : {"email" : $("email").val()},
+				processData : false,
+				contentType:false,
+				success : function(data){
+					if(data == true){
+						alert("메일을 성공적으로 보냈습니다.");
+						console.log(data);
+					}else{
+						alert("메일주소가 없습니다.");
+					}
+				}
+				
+				
+			})
+			
+		}else{
+			alert("메일송부를 취소했습니다.");
+		}
+		
+	}
+	
+</script>
 <title>bInfo</title>
 </head>
 <script type="text/javascript" src="/resource/js/bootstrap.js"></script>
@@ -27,7 +61,7 @@
 	          </ul>
 	        </div>  
 	   </nav>
-	   
+	
 	<div align="center" style="padding-top:200px">
 		<div align="center">
 			<h1>Board Info</h1>
@@ -59,10 +93,41 @@
 					<input type="button" class="btn btn-primary btn-sm" value="Reply" onclick="location.href='boardReplyWrite?num=${bdto.num}'">
 					<input type="button" value="modify" onclick="location.href='boardUpdate?num=${bdto.num}'">
 					<input type="button" value="delete" onclick="location.href='boardDelete?num=${bdto.num}'">
+					<input type="button" value="메일보내기" onclick="javascrpit:emailSend(); return false;">
+					<input type="button" class="btn btn-primary btn-sm" value="작성하기" onClick="onClickModal()">
 					<input type="button" value="move Board" onclick="location.href='boardList'">
 				</td>
 			</tr>
+		<form:form id="BoardDTO" name="BoardDTO" method="post">
+			<input type="hidden" name="num" id="num" value="${ bdto.num}"/>
+		</form:form>
 		</table>
 	</div>
+	<script>
+		const onClickModal  => {
+			
+			var num = '${bdto.num}';
+			
+			$.ajax({
+				url : "boardReplyWrite",
+				data : "num"+num,
+				type : "POST",
+				success : function(data) {
+					
+					var option = "width=1000, height  = 500, top = 100, left = 200, location=no"
+					const openWin = window.open("boardReplyWrite","",option);
+					console.log(num);
+					
+				},
+				error : function() {
+					alert("에러");
+				}
+			})
+			
+			
+			
+			
+		}
+	</script>
 </body>
 </html>
