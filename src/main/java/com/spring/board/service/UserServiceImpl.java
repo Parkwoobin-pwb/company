@@ -1,5 +1,6 @@
 package com.spring.board.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,13 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		return null;
+	}
+
+
+	@Override
+	public List<UserDTO> userHistory(Map<String, String> dataMap) throws DataAccessException {
+		
+		return userDao.userHistory(dataMap);
 	}
 
 }

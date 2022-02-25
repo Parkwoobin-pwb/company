@@ -8,6 +8,8 @@
 <title>Insert title here</title>
 <link href="${contextPath }/resources/css/myStyle.css" rel="stylesheet" />
 <script src="${contextPath}/resources/jQuery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/resource/js/bootstrap.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <c:if test='${ not empty message}'>
 	<script>
@@ -17,7 +19,10 @@
 	</script>
 </c:if>
 <body>
-	<h1>Login in to WoobinBoard</h1>
+	<div>
+	  	<c:import url="/header.do"/>
+	</div>
+	
 	<br>
 	<form action="login.do" method="post">
 		<table class="table table-bordered table-hover">

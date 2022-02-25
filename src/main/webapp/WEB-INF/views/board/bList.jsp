@@ -65,9 +65,12 @@
 	               <li class="nav-item">
 	                 <a class="nav-link" href="login">로그인</a>
 	               </li>  
+	               <li class="nav-item">
+	                 <a class="nav-link" href="userHistory">유저조회</a>
+	               </li>  
 	          </ul>
 	        </div>  
-	   </nav>
+	   </nav> 
 	<br>
         <div id="layoutSidenav_content">
                 <div class="container-fluid">
@@ -109,7 +112,7 @@
 												<th>WRITER</th>
 												<th>REG_DATE</th>
 												<th>READ_COUNT</th>
-												<th>ORDER</th>
+												
 											</tr>
 										</thead>
                               		    <c:set var="order" value="${totalBoardCount - (currentPageNumber-1) * onePageViewCount}"/>
@@ -128,7 +131,7 @@
 												<td><a href="boardInfo?num=${bdto.num}">${bdto.writer }</a></td>
 												<td><fmt:formatDate value="${bdto.regDate }" pattern="yyyy-MM-dd"/></td>
 												<td>${bdto.readCount }</td>
-												<td>${order }</td>
+												
 											</tr>
 										</c:forEach>
 										<tr>

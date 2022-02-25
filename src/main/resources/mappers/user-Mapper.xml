@@ -64,5 +64,19 @@
 		]]>
 	</select>
 	
+	<select id="selectUserJoinHistory" resultType="com.spring.board.dto.UserDTO" parameterType="java.util.Map">
+		<![CDATA[
+			SELECT
+					*
+			FROM
+					USER
+			WHERE
+					DATE_FORMAT(REG_DATE, '%Y%m%d%H%i%S') BETWEEN #{beginDate} AND #{endDate}
+			ORDER BY
+					REG_DATE DESC
+		
+		]]>
+	</select>
+	
 	
 </mapper>

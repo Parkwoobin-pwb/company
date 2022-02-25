@@ -38,6 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.mysql.cj.Session;
 import com.spring.board.dto.BoardDTO;
+import com.spring.board.dto.CommonUtil;
 import com.spring.board.dto.UserDTO;
 import com.spring.board.service.BoardService;
 import com.spring.board.service.UserService;
@@ -59,6 +60,9 @@ public class BoardController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private CommonUtil commonUtil;
 	
 	@Autowired
 	private UserDTO userDTO;
@@ -469,7 +473,7 @@ public class BoardController {
 		
 		ModelAndView mv = new ModelAndView();
 		userDTO = userService.login(loginMap);
-		
+		//아직 구현하지않음 유저날짜별 조회 완료 후 개발 진행
 		HttpSession session = request.getSession();
 		if(userDTO != null) {
 			session.setAttribute("isLogin", true);
@@ -483,6 +487,51 @@ public class BoardController {
 			
 		}
 		return mv;
+		
+		
+		
+	}
+	
+	@RequestMapping(value="/header.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String header(Model model, HttpServletRequest request) {
+		
+		return "/common/header";
+		
+	}
+	@RequestMapping(value="/userHistory", method = RequestMethod.GET)
+	public ModelAndView userHistory(@RequestParam Map<String, String> dataMap) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/user/history");
+		
+		String fixedSearchPeriod = dataMap.get("fixedSearchPeriod");
+		String beginDate = "";
+		String endDate = "";
+		
+		
+		String[] tempDate = commonUtil.calcSearchPeriod(fixedSearchPeriod).split(",");
+		beginDate = tempDate[0];
+		endDate = tempDate[1];
+		dataMap.put("beginDate",beginDate);
+		dataMap.put("endDate",endDate);
+		List<UserDTO> userList = userService.userHistory(dataMap);
+		
+		String beginDate1[] = beginDate.split("-");
+		String endDate1[] = endDate.split("-");
+		
+		mv.addObject("beginYear", beginDate1[0]);
+		mv.addObject("beginMonth", beginDate1[1]);
+		mv.addObject("beginDay", beginDate1[2]);
+		mv.addObject("endYear", endDate1[0]);
+		mv.addObject("endMonth", endDate1[1]);
+		mv.addObject("endDay", endDate1[2]);
+		mv.addObject("userList", userList);
+		
+		return mv;
+				
+		
+		
+		
+		
 		
 		
 		

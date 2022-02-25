@@ -1,5 +1,6 @@
 package com.spring.board.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -29,11 +30,8 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public int chekckId(String id) throws Exception {
 		int count = 0;
-		try {
-			count = sqlSession.selectOne("com.spring.mapper.userMapper.checkId", id);			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		count = sqlSession.selectOne("com.spring.mapper.userMapper.checkId", id);			
+		
 		
 		return count;
 	}
@@ -43,6 +41,13 @@ public class UserDaoImpl implements UserDao {
 	public UserDTO login(Map<String, String> loginMap) throws DataAccessException {
 		
 		return sqlSession.selectOne("com.spring.mapper.userMapper.login", loginMap);
+	}
+
+
+	@Override
+	public List<UserDTO> userHistory(Map<String, String> dataMap) throws DataAccessException {
+		
+		return sqlSession.selectList("com.spring.mapper.userMapper.selectUserJoinHistory", dataMap);
 	}
 
 }

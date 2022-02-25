@@ -48,7 +48,7 @@
   
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <body>
-	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+	<!-- <nav class="navbar navbar-expand-md bg-dark navbar-dark">
 	        <a class="navbar-brand" href="boardList">Woobin Board</a>
 	        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
 	          <span class="navbar-toggler-icon"></span>
@@ -60,8 +60,10 @@
 	               </li>
 	          </ul>
 	        </div>  
-	   </nav>
-	
+	   </nav> -->
+	<div>
+	  	<c:import url="/header.do"/>
+	</div>
 	<div align="center" style="padding-top:200px">
 		<div align="center">
 			<h1>Board Info</h1>

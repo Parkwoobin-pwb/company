@@ -1,6 +1,7 @@
 package com.spring.board.dao;
 
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -18,5 +19,6 @@ public interface UserDao {
 	public UserDTO login(Map<String, String> loginMap)throws DataAccessException;
 	public void insert(UserDTO udto) throws Exception;
 	public int chekckId(String id) throws Exception;
+	public List<UserDTO> userHistory(Map<String, String> dataMap) throws DataAccessException;
 	
 }
