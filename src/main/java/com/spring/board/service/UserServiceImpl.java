@@ -61,9 +61,12 @@ public class UserServiceImpl implements UserService{
 
 
 	@Override
-	public List<UserDTO> userHistory(Map<String, String> dataMap) throws DataAccessException {
-		
-		return userDao.userHistory(dataMap);
+	public List<UserDTO> userHistory(Map<String, Object> condMap) throws DataAccessException {
+		System.out.println("service"+condMap.get("beginDate"));
+		System.out.println("service1"+condMap.get("endDate"));
+		System.out.println("service2"+condMap.get("search_word"));
+		System.out.println("service2"+condMap.get("search_type"));
+		return userDao.userHistory(condMap);
 	}
 
 }

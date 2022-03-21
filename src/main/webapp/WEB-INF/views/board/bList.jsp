@@ -86,6 +86,8 @@
                             3) 페이징기능 적용<br>
                             4) 데이터더미 만들기 > <a href="${contextPath}/makeDummyData">테스트용 더미 만들기</a> <br>
                             5) 계층형 댓글 적용 <br>
+                            6) 유저조회 기능 적용 <br> 
+                            7) 회원가입 기능 적용 <br>
                         </div>
                     </div>
                             <i class="fas fa-table mr-1"></i>

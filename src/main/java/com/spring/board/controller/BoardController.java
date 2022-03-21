@@ -498,22 +498,46 @@ public class BoardController {
 		return "/common/header";
 		
 	}
+	
+	
+	
 	@RequestMapping(value="/userHistory", method = RequestMethod.GET)
 	public ModelAndView userHistory(@RequestParam Map<String, String> dataMap) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("/user/history");
 		
 		String fixedSearchPeriod = dataMap.get("fixedSearchPeriod");
+		String search_type = dataMap.get("search_type");
+		String search_word = dataMap.get("search_word");
 		String beginDate = "";
 		String endDate = "";
+		String[] tempDate;
+		
+		if(dataMap.get("beginDate") == null && dataMap.get("endDate")==null) {
+			
+			tempDate = commonUtil.calcSearchPeriod(fixedSearchPeriod).split(",");
+			beginDate = tempDate[0];
+			endDate = tempDate[1];
+		}else {
+			beginDate = dataMap.get("beginDate");
+			endDate = dataMap.get("endDate");
+			
+		}
+		/*
+		 * if(search_word == "" ) { search_word = null; }
+		 * 
+		 * if(search_type != "") { search_type = null; }
+		 */
+		
+		Map<String, Object> condMap = new HashMap<String, Object>();
+		condMap.put("beginDate", beginDate);
+		condMap.put("endDate", endDate);
+		condMap.put("search_type", search_type);
+		condMap.put("search_word", search_word);
 		
 		
-		String[] tempDate = commonUtil.calcSearchPeriod(fixedSearchPeriod).split(",");
-		beginDate = tempDate[0];
-		endDate = tempDate[1];
-		dataMap.put("beginDate",beginDate);
-		dataMap.put("endDate",endDate);
-		List<UserDTO> userList = userService.userHistory(dataMap);
+		
+		List<UserDTO> userList = userService.userHistory(condMap);
 		
 		String beginDate1[] = beginDate.split("-");
 		String endDate1[] = endDate.split("-");

@@ -24,7 +24,7 @@ public class CommonUtil {
 		endYear = Integer.toString(cal.get(Calendar.YEAR));
 		endMonth = df.format(cal.get(Calendar.MONTH)+1);
 		endDay = df.format(cal.get(Calendar.DATE));
-		endDate = endYear + "-"+ endMonth+"-"+endDay;
+		endDate = endYear+"-"+ endMonth+"-"+endDay;
 		
 		if(fixedSearchPeriod == null) cal.add(cal.MONTH, -4);
 		else if(fixedSearchPeriod.equals("one_week")) cal.add(Calendar.DAY_OF_YEAR, -7);
@@ -40,7 +40,7 @@ public class CommonUtil {
 		
 		beginDate = beginYear+"-"+beginMonth+"-"+beginDay;
 		
-		return beginDate +" , "+endDate;
+		return beginDate +" ,"+endDate;
 		
 		
 	}

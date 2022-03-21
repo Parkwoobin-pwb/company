@@ -64,19 +64,78 @@
 		]]>
 	</select>
 	
-	<select id="selectUserJoinHistory" resultType="com.spring.board.dto.UserDTO" parameterType="java.util.Map">
-		<![CDATA[
-			SELECT
+	<!-- <select id="selectUserJoinHistory" resultType="com.spring.board.dto.UserDTO" >
+		<choose>
+			<when test="search_type.equals('all')"> 전체검색일 경우
+				<choose>
+					<when test="search_word.equals('')"> 전체검색에서 키워드가 없을경우
+						SELECT
+								*
+						FROM
+								USER
+						WHERE
+								REG_DATE  BETWEEN #{beginDate}  AND #{endDate}
+						ORDER BY
+								REG_DATE DESC
+					</when>
+					<otherwise>전체검색 중 문자가 있을경우
+						SELECT
+								*
+						FROM
+								USER
+						WHERE
+								REG_DATE  BETWEEN #{beginDate}  AND #{endDate}
+								 AND 
+								 MEMBER_NAME LIKE '% ${search_word}%' OR
+								 MEMBER_ID LIKE '% ${search_word}%'
+						ORDER BY
+								REG_DATE DESC
+						
+					</otherwise>					
+				</choose>
+			</when>
+			<otherwise>서치키워드를 이용할 경우
+				SELECT
+						*
+				FROM
+						USER
+				WHERE
+						<if test="search_type.equals('memberName')">
+							MEMBER_NAME LIKE '% ${search_word}%'
+						</if>
+						<if test="search_type.equals('memberId')">
+							MEMBER_ID LIKE '% ${search_word}%'
+						</if>
+				ORDER BY
+								REG_DATE DESC
+			</otherwise>
+		</choose>
+		
+	</select>  -->
+	
+	<select id="selectUserJoinHistory" resultType="com.spring.board.dto.UserDTO" parameterType="java.util.HashMap">
+		SELECT
 					*
 			FROM
 					USER
 			WHERE
-					DATE_FORMAT(REG_DATE, '%Y%m%d%H%i%S') BETWEEN #{beginDate} AND #{endDate}
+					REG_DATE  BETWEEN #{beginDate} AND #{endDate}
+					<if test="search_type != null and search_type == 'all' " >
+						AND MEMBER_NAME LIKE  CONCAT('%', #{search_word}, '%')
+						OR MEMBER_ID LIKE CONCAT('%', #{search_word}, '%')
+					</if>
+					
+					<if test="search_type != null and search_type == 'memberName' ">
+						AND MEMBER_NAME LIKE CONCAT('%', #{search_word}, '%')
+					</if>
+					<if test="search_type != null and search_type == 'memberId' ">
+						AND MEMBER_ID LIKE CONCAT('%', #{search_word}, '%')
+					</if>
 			ORDER BY
 					REG_DATE DESC
-		
-		]]>
-	</select>
-	
+	</select> 
+
+
+	 
 	
 </mapper>

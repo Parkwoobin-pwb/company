@@ -45,9 +45,9 @@ public class UserDaoImpl implements UserDao {
 
 
 	@Override
-	public List<UserDTO> userHistory(Map<String, String> dataMap) throws DataAccessException {
+	public List<UserDTO> userHistory(Map<String, Object> condMap) throws DataAccessException {
 		
-		return sqlSession.selectList("com.spring.mapper.userMapper.selectUserJoinHistory", dataMap);
+		return sqlSession.selectList("com.spring.mapper.userMapper.selectUserJoinHistory", condMap);
 	}
 
 }

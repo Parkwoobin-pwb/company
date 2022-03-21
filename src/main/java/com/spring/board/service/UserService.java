@@ -13,5 +13,5 @@ public interface UserService {
 		public UserDTO login(Map<String, String> loginMap) throws DataAccessException;
 		public void insertUser(UserDTO udto) throws Exception;
 		public int checkId(String id)throws Exception;
-		public List<UserDTO> userHistory (Map<String, String> dataMap) throws DataAccessException;
+		public List<UserDTO> userHistory (Map<String, Object> condMap) throws DataAccessException;
 }
