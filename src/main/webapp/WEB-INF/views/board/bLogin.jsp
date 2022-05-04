@@ -11,20 +11,20 @@
 <script type="text/javascript" src="/resource/js/bootstrap.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
-<c:if test='${ not empty message}'>
-	<script>
+
+<script>
 		$().ready(function(){
 			alert("아이디와 비밀번호를 확인하세요.");
 		});
-	</script>
-</c:if>
+</script>
+
 <body>
 	<div>
 	  	<c:import url="/header.do"/>
 	</div>
 	
 	<br>
-	<form action="login.do" method="post">
+	<form action="login.do" method="post" name="userdto">
 		<table class="table table-bordered table-hover">
 			<colgroup>
 				<col width="20%">

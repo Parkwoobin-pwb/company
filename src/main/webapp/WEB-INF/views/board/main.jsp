@@ -9,9 +9,10 @@
 </head>
 <script src="/newspaper/mobile/js/jquery-3.4.1.min.js"></script>
 <script src="<c:url value="/js/egovframework/mbl/cmm/jquery-1.9.1.min.js" />"></script>
+<script type="text/javascript"
+		src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
 <script>
-	
-	
+
 	
 </script>
 <body>
@@ -42,8 +43,9 @@
 					<span class="field"><input  type="text" class="comText txtHelp" id="txt_search" name="search_text" value="${BoardDTO.subject}"/><label for="txt_search">검색어를 입력해주세요.</label></span>
 					<button type="button" class="nbtn" onclick="javascript:fn_searchList('1');return false;"><em class="cbtn btGray"><em>조회</em></em></button>
 				</div><!-- searchPanel -->
-			
 			</div>
+			<a href="#">gg
+			
 		</div>
 </body>
 </html>

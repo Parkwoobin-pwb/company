@@ -39,6 +39,11 @@
 <script>
 	$(document).ready(function(e) {
 		
+		
+		$("#select_email").change(function () {
+			
+		})
+		
 		var idx= false;
 		
 		$('#checkUp').click(function() {

@@ -2,6 +2,7 @@ package com.spring.board.controller;
 
 import java.lang.ProcessBuilder.Redirect;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,13 +35,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.mysql.cj.Session;
 import com.spring.board.dto.BoardDTO;
 import com.spring.board.dto.CommonUtil;
+import com.spring.board.dto.LogDTO;
 import com.spring.board.dto.UserDTO;
 import com.spring.board.service.BoardService;
+import com.spring.board.service.LogService;
 import com.spring.board.service.UserService;
 
 import javax.mail.internet.MimeMessage;
@@ -62,17 +68,22 @@ public class BoardController {
 	private UserService userService;
 	
 	@Autowired
+	private LogService logService;
+	
+	@Autowired
 	private CommonUtil commonUtil;
 	
 	@Autowired
 	private UserDTO userDTO;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
 	public String main(Model model) throws Exception {
 		
 		//날씨 크롤링
 		String url = "https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&sq=&o=&q=%EC%98%A4%EB%8A%98%EB%82%A0%EC%94%A8";
 		Document doc = Jsoup.connect(url).get();		
+		
+		
 		
 		Elements e5 = doc.getElementsByAttributeValue("class","txt_temp");
 		Elements yesterday = doc.getElementsByAttributeValue("class", "txt_desc");
@@ -82,12 +93,49 @@ public class BoardController {
 		Element today = e5.get(2);
 		String todayWeather = today.text();//태그에 감싸져있는 값들을 가져오는.text함수
 		
+		
+		
 		String yesterDay = yesterday.text();
 		System.out.println(yesterday);//어제날씨
 		
 		
 		String misemeonji = nongdo.text();
 		System.out.println(misemeonji);//풍속,습도,미세먼지 농도
+		
+		
+		String url2 = "http://www.dangjin.go.kr/xml_clone/BBSMSTR_000000000013/BBSMSTR_000000000013.xml";
+		Document doc2 = Jsoup.connect(url2).get();
+		
+		Elements title = doc2.getElementsByAttributeValue("class", "title");
+		System.out.println("dfdfdfdfdfd"+title);
+		
+		LogDTO logDto = new LogDTO();
+		try {
+				
+			    HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+			    String ip = req.getHeader("X-FORWARDED-FOR");
+			    if (ip == null) {
+			    	ip = req.getRemoteAddr();
+			    	
+			    	
+			    }
+			    
+			    logDto.setLogIp(ip);
+			    
+			    
+			    	
+			    logService.insertLog(logDto);
+			    
+			    System.out.println("iptest : "+ip);
+			   
+			    UrlPathHelper urlPathHelper = new UrlPathHelper();
+			    String originalURL = urlPathHelper.getOriginatingRequestUri(req);
+			    
+			    String params = req.getQueryString();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		
 		
 		Element img2 = img.get(0);

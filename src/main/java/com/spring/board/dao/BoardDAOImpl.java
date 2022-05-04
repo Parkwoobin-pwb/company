@@ -71,7 +71,7 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public int checkWriter(String writer) throws Exception {
+	public int checkWriter(String writer) {
 		int checkCount = 0;
 		try {
 			checkCount = sqlsession.selectOne("com.spring.mapper.BoardMapper.checkWriter", writer);

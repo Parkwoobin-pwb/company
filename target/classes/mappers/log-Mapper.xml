@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!--mapper임을 명시하기 위한 DTD 선언 -->
+		
+
+<!-- namespace 항상 고유해야함 -->		
+<mapper namespace="com.spring.mapper.logMapper">
+
+	
+	<!-- 로그 쿼리 -->
+	<insert id="insertLog" parameterType="com.spring.board.dto.LogDTO">
+		INSERT INTO 
+				VISIT<!-- (
+			LOG_PK,
+			RESERVE_DATE,
+			LOG_IP
+		
+		) -->
+					
+		VALUES(
+					(SELECT
+							IFNULL(MAX(LOG_PK)+1,1) <!-- 만약 넘버가 널이면 1이 나오고 아니면 맥스값에 + 1 더하는것 -->
+					FROM
+							VISIT AS U),
+					now(),
+					#{logIp}
+					
+					)
+				
+	</insert>
+
+</mapper>
+		
+		
