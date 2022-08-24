@@ -31,21 +31,29 @@
 			</div>
 
 		</div>
-		<div align="center">
-			<div>
-				<div class="searchPanel">	
-					<select id="interview_group_id" name="interview_group_id">
-						<option value="">게시글선택</option>
-						<c:forEach var="bdto" items="${resultList}" varStatus="status">
-							<option >${bdto.subject }</option>
-						</c:forEach>
-					</select>				
-					<span class="field"><input  type="text" class="comText txtHelp" id="txt_search" name="search_text" value="${BoardDTO.subject}"/><label for="txt_search">검색어를 입력해주세요.</label></span>
-					<button type="button" class="nbtn" onclick="javascript:fn_searchList('1');return false;"><em class="cbtn btGray"><em>조회</em></em></button>
-				</div><!-- searchPanel -->
+		<div class="login_body" align="center">
+			<div class="login_select" style="width: 30%; height : 100%">
+				<form method="POST" action="${pageContext.request.contextPath}/user/login.do">
+						<fieldset>
+	                    	<legend>로그인 폼</legend>
+							<ul>
+								<li>
+									<p class="field"><input  type="text" class="txtLogin" name="user_id" id="user_id" onkeydown="if(event.keyCode == 13){fn_actionLogin();}" value="" /><label for="admin_id" id="place_id">아이디</label></p>
+									<p class="field"><input type="password" class="txtLogin" id="user_password" name="user_password" onkeydown="if(event.keyCode == 13){fn_actionLogin();}" value="" /><label for="admin_password" id="place_password">비밀번호</label></p>
+								</li>
+								<li>
+									<input type="image" src="${pageContext.request.contextPath}/resources/image/instagram_icon.png" alt="Login" class="login_bt" onclick="javascript:fn_actionLogin();return false;"/>
+								</li>
+								<li>
+									<div class="login_idcheck">
+		                                <input type="checkbox" class="login_Idcheckbox" id="login_Idcheckbox"/><label for="login_Idcheckbox">아이디 저장</label>	
+		                            </div>
+								</li>
+							</ul>
+						</fieldset>
+				</form>
 			</div>
-			<a href="#">gg
-			
-		</div>
+	</div>
+		
 </body>
 </html>

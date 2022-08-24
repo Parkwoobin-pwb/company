@@ -35,7 +35,8 @@
 					#{roadAddress},
 					#{jibunAddress},
 					#{namujiAddress},
-					now())
+					now(),
+					'U')
 				
 	</insert>
 	
@@ -60,7 +61,7 @@
 		FROM
 				USER
 		WHERE
-				MEMBER_ID =#{memberId}
+				MEMBER_ID =#{memberId} AND MEMBER_PW=#{memberPw}
 		]]>
 	</select>
 	

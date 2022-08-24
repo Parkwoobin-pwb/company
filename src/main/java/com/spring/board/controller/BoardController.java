@@ -49,6 +49,7 @@ import com.spring.board.service.BoardService;
 import com.spring.board.service.LogService;
 import com.spring.board.service.UserService;
 
+import javax.el.PropertyNotFoundException;
 import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -192,70 +193,71 @@ public class BoardController {
 			@RequestParam(name = "currentPageNumber", defaultValue = "1") int currentPageNumber,
 			@RequestParam(name = "searchKeyword", defaultValue = "total") String searchKeyword,
 			@RequestParam(name = "searchWord", defaultValue = "") String searchWord, Model model) throws Exception {
-
-		int startBoardIdx = (currentPageNumber - 1) * onePageViewCount;
-
-		// 관련 정보 MAP생성 (한페이지에 보여줄 게시글 숫자, 시작페이지의 인덱스, 검색키워드, 검색어)
-		Map<String, Object> searchInfo = new HashMap<String, Object>();
-		searchInfo.put("onePageViewCount", onePageViewCount);
-		searchInfo.put("startBoardIdx", startBoardIdx);
-		searchInfo.put("searchKeyword", searchKeyword);
-		searchInfo.put("searchWord", searchWord);
-
-		System.out.println("searchInfo" + searchInfo);
-
-		List<BoardDTO> boardList = boardService.getSearchBoard(searchInfo);
-
-		// 게시글의 전체 개수를 반환하는 관련 정보 MAP생성(검색키워드, 검색어)
-
-		Map<String, String> searchCountInfo = new HashMap<String, String>();
-		searchCountInfo.put("searchKeyword", searchKeyword);
-		searchCountInfo.put("searchWord", searchWord);
-
-		// 전체페이개수 = 전체게시글수 / 한페이지에서 보여지는 글 수
-		int totalBoardCount = boardService.getAllBoardCount(searchCountInfo);
-		int addPage = totalBoardCount % onePageViewCount == 0 ? 0 : 1; // 나머지가 0이면 추가x, 나머지가 0이 아니면 +1 페이지 처리
-		int totalPageCount = totalBoardCount / onePageViewCount + addPage;
-
-		// 시작 페이지
-		int startPage = 1;
-		if (currentPageNumber % 10 == 0)
-			startPage = (currentPageNumber / 10 - 1) * 10 + 1;
-		else
-			startPage = (currentPageNumber / 10) * 10 + 1;
-
-		// 끝페이지
-		int endPage = startPage + 9;
-
-//		// 끝페이지가 전체 페이지 개수보다 크다면 
-		if (endPage > totalPageCount) {
-			endPage = totalPageCount;
-		}
-//		
-//		// 게시물이 한페이지에 보여지는 것보다 작다면
-		if (onePageViewCount > totalBoardCount) {
-			startPage = 1;
-			endPage = 0;
-		}
-
-		model.addAttribute("startPage", startPage);
-		model.addAttribute("endPage", endPage);
-		model.addAttribute("totalBoardCount", totalBoardCount);
-		model.addAttribute("onePageViewCount", onePageViewCount);
-		model.addAttribute("currentPageNumber", currentPageNumber);
-		model.addAttribute("searchKeyword", searchKeyword);
-		model.addAttribute("searchWord", searchWord);
-		model.addAttribute("boardList", boardList);
-
-		System.out.println("====================================");
-		System.out.println("startPage : " + startPage);
-		System.out.println("endPage : " + endPage);
-		System.out.println("totalBoardCount : " + totalBoardCount);
-		System.out.println("onePageViewCount : " + onePageViewCount);
-		System.out.println("currentPageNumber : " + currentPageNumber);
-		System.out.println("searchKeyword : " + searchKeyword);
-		System.out.println("searchWord : " + searchWord);
-		System.out.println("====================================\n");
+		
+		
+		try {
+			
+			
+			int startBoardIdx = (currentPageNumber - 1) * onePageViewCount;
+	
+			// 관련 정보 MAP생성 (한페이지에 보여줄 게시글 숫자, 시작페이지의 인덱스, 검색키워드, 검색어)
+			Map<String, Object> searchInfo = new HashMap<String, Object>();
+			searchInfo.put("onePageViewCount", onePageViewCount);
+			searchInfo.put("startBoardIdx", startBoardIdx);
+			searchInfo.put("searchKeyword", searchKeyword);
+			searchInfo.put("searchWord", searchWord);
+	
+			System.out.println("searchInfo" + searchInfo);
+	
+			List<BoardDTO> boardList = boardService.getSearchBoard(searchInfo);
+	
+			// 게시글의 전체 개수를 반환하는 관련 정보 MAP생성(검색키워드, 검색어)
+	
+			Map<String, String> searchCountInfo = new HashMap<String, String>();
+			searchCountInfo.put("searchKeyword", searchKeyword);
+			searchCountInfo.put("searchWord", searchWord);
+	
+			// 전체페이개수 = 전체게시글수 / 한페이지에서 보여지는 글 수
+			int totalBoardCount = boardService.getAllBoardCount(searchCountInfo);
+			int addPage = totalBoardCount % onePageViewCount == 0 ? 0 : 1; // 나머지가 0이면 추가x, 나머지가 0이 아니면 +1 페이지 처리
+			int totalPageCount = totalBoardCount / onePageViewCount + addPage;
+	
+			// 시작 페이지
+			int startPage = 1;
+			if (currentPageNumber % 10 == 0)
+				startPage = (currentPageNumber / 10 - 1) * 10 + 1;
+			else
+				startPage = (currentPageNumber / 10) * 10 + 1;
+	
+			// 끝페이지
+			int endPage = startPage + 9;
+	
+	//		// 끝페이지가 전체 페이지 개수보다 크다면 
+			if (endPage > totalPageCount) {
+				endPage = totalPageCount;
+			}
+	//		
+	//		// 게시물이 한페이지에 보여지는 것보다 작다면
+			if (onePageViewCount > totalBoardCount) {
+				startPage = 1;
+				endPage = 0;
+			}
+			
+			model.addAttribute("startPage", startPage);
+			model.addAttribute("endPage", endPage);
+			model.addAttribute("totalBoardCount", totalBoardCount);
+			model.addAttribute("onePageViewCount", onePageViewCount);
+			model.addAttribute("currentPageNumber", currentPageNumber);
+			model.addAttribute("searchKeyword", searchKeyword);
+			model.addAttribute("searchWord", searchWord);
+			model.addAttribute("boardList", boardList);
+			
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+				e.getMessage();
+			}
+	
 
 		return "board/bList";
 
@@ -520,25 +522,42 @@ public class BoardController {
 	public ModelAndView login(@RequestParam Map<String, String>loginMap, HttpServletRequest request) {
 		
 		ModelAndView mv = new ModelAndView();
+		UserDTO userDTO = new UserDTO();
+
 		userDTO = userService.login(loginMap);
-		//아직 구현하지않음 유저날짜별 조회 완료 후 개발 진행
-		HttpSession session = request.getSession();
 		if(userDTO != null) {
-			session.setAttribute("isLogin", true);
-			session.setAttribute("memberInfo", userDTO);
-			System.out.println("login");
+			HttpSession session = request.getSession();
+			session.setAttribute("isLogin",true);
+			session.setAttribute("userDTO",userDTO);
 			mv.setViewName("redirect:/boardList");
-		}else {
-			mv.addObject("message","로그인실패");
-			mv.setViewName("redirect:/login");
-			System.out.println("loginFail");
 			
+		}else {
+			mv.addObject("message","로그인에 실패하였습니다.");
+			mv.setViewName("redirect:/login");
 		}
+		
+		System.out.println(userDTO.getMemberName());
+		
 		return mv;
 		
-		
-		
 	}
+	
+	@RequestMapping(value="/logout.do" , method = RequestMethod.GET)
+	public ModelAndView logout(HttpServletRequest request) throws Exception {
+		
+		ModelAndView mv = new ModelAndView(); //보여질화면 세팅
+		HttpSession session = request.getSession(); //세션에 현재로그인정보 입력
+		
+		session.setAttribute("isLogin", false); //현재로그인 정보를 폴스로반환
+		session.removeAttribute("userDTO"); //세션정보를 삭제
+		
+		mv.setViewName("redirect:/boardList"); //보여질화면 정의
+		
+		return mv; //화면 리턴
+	
+	}
+	
+	
 	
 	@RequestMapping(value="/header.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String header(Model model, HttpServletRequest request) {

@@ -15,23 +15,35 @@
 	        </button>
 	        <div class="collapse navbar-collapse" id="collapsibleNavbar">
 	          <ul class="navbar-nav">
-	     <%--   <c:if test="${user not empty}">
-	               <li class="nav-item">
-	               		<span class="user"><b>${user.memberId }</b>님 로그인 중</span>&nbsp;
-	               </li>
-	            </c:if>
-	          	<c:if test="${user empty}">
-	               <li class="nav-item">
-	               		<span class="user"><b>${user.memberId }</b>님 로그인 중</span>&nbsp;
-	               </li> 
-	            </c:if>--%>
-	               <li>
-	                 <a class="nav-link" href="boardWrite">게시글쓰기</a>
-	               </li>  
-	               <li class="nav-item">
-	                 <a class="nav-link" href="login">로그인</a>
-	               </li>  
-	          </ul>
+		     	<c:choose> 
+		     	 	<c:when test = "${isLogin == true and userDTO.userType == 'A' }">
+		               <li class="nav-item">
+		               		<span class="user"><b>${userDTO.memberId }</b>님 로그인 중</span>&nbsp;
+		               </li>
+		               <li><a href="logout.do">로그아웃</a></li>
+		           </c:when>
+		           <c:when test="${isLogin==true and not empty userDTO }">
+		           		<span class="user"><b>${userDTO.memberId }</b>님 로그인 중</span>&nbsp;
+			   			<li><a href="logout.do">로그아웃</a></li>
+			   			<li><a href="${contextPath}/mypage/myPageMain.do">마이페이지</a></li>
+			 	   </c:when>
+		           <c:otherwise>
+					    <li class="nav-item">
+	                 		<a class="nav-link" href="boardWrite">게시글쓰기</a>
+	               		</li>
+	               		<li class="nav-item">
+	                 		<a class="nav-link" href="join">회원가입</a>
+	               		</li>  
+	               		<li class="nav-item">
+	                 		<a class="nav-link" href="login">로그인</a>
+	               		</li>  
+	               		<li class="nav-item">
+	                 		<a class="nav-link" href="userHistory">유저조회</a>
+	               		</li>  
+					 </c:otherwise>
+				</c:choose> 
+		           
+		          </ul>
 	        </div>  
 	  </nav>
 </body>

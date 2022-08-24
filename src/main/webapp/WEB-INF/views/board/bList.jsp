@@ -49,7 +49,7 @@
 </script>
 </head>
 	<body>
-	   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+	<!--    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
 	        <a class="navbar-brand" href="boardList">Woobin Board</a>
 	        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
 	          <span class="navbar-toggler-icon"></span>
@@ -69,8 +69,11 @@
 	                 <a class="nav-link" href="userHistory">유저조회</a>
 	               </li>  
 	          </ul>
-	        </div>  
-	   </nav> 
+	        </div> -->
+	        <div>
+	  			<c:import url="/header.do"/>
+			</div>  
+	    
 	<br>
         <div id="layoutSidenav_content">
                 <div class="container-fluid">
