@@ -12,6 +12,7 @@
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
   <script type="text/javascript" src="<c:url value="/resources/js/cal.js" />"></script>
   <script type="text/javascript" src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script type="text/javascript" src="/resource/js/bootstrap.js"></script>
   
   <script src="resources/jQuery/jquery-3.4.1.min.js"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -41,8 +42,8 @@
 		
 		
 		$("#select_email").change(function () {
-			
-		})
+			$('#email2').val($("#select_email option:selected").val());//id값 email2인 값에다가 id값select_email값을 가져와서 email2값 변경해주기
+		});
 		
 		var idx= false;
 		
@@ -151,6 +152,9 @@
 	});
 </script>
 <body>
+	<div>
+	  	<c:import url="/header.do"/>
+	</div>
 	<form action="join" method="post" name="userDTO" id="userDTO" >
 	<h2>회원가입</h2>
 	<br>

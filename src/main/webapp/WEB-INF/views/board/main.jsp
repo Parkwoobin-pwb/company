@@ -32,15 +32,10 @@
 
 		</div>
 		<div class="login_body" align="center">
-			<div class="login_select" style="width: 30%; height : 100%">
-				<form method="POST" action="${pageContext.request.contextPath}/user/login.do">
+			
 						<fieldset>
-	                    	<legend>로그인 폼</legend>
+	                    	<legend>instargram</legend>
 							<ul>
-								<li>
-									<p class="field"><input  type="text" class="txtLogin" name="user_id" id="user_id" onkeydown="if(event.keyCode == 13){fn_actionLogin();}" value="" /><label for="admin_id" id="place_id">아이디</label></p>
-									<p class="field"><input type="password" class="txtLogin" id="user_password" name="user_password" onkeydown="if(event.keyCode == 13){fn_actionLogin();}" value="" /><label for="admin_password" id="place_password">비밀번호</label></p>
-								</li>
 								<li>
 									<input type="image" src="${pageContext.request.contextPath}/resources/image/instagram_icon.png" alt="Login" class="login_bt" onclick="javascript:fn_actionLogin();return false;"/>
 								</li>
@@ -51,9 +46,8 @@
 								</li>
 							</ul>
 						</fieldset>
-				</form>
-			</div>
-	</div>
+		</div>
+	
 		
 </body>
 </html>

@@ -69,4 +69,11 @@ public class UserServiceImpl implements UserService{
 		return userDao.userHistory(condMap);
 	}
 
+
+	@Override
+	public UserDTO userDetail(String userId) throws Exception {
+		
+		return userDao.userDetail(userId);
+	}
+
 }

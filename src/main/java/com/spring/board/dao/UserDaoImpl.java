@@ -50,4 +50,11 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectList("com.spring.mapper.userMapper.selectUserJoinHistory", condMap);
 	}
 
+
+	@Override
+	public UserDTO userDetail(String userId) throws Exception {
+		
+		return sqlSession.selectOne("com.spring.mapper.userMapper.selectOneUser", userId);
+	}
+
 }

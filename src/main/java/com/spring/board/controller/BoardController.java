@@ -30,7 +30,8 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +49,8 @@ import com.spring.board.dto.UserDTO;
 import com.spring.board.service.BoardService;
 import com.spring.board.service.LogService;
 import com.spring.board.service.UserService;
+import com.sprong.board.util.SHA256Util;
+import com.sprong.board.util.StringUtil;
 
 import javax.el.PropertyNotFoundException;
 import javax.mail.internet.MimeMessage;
@@ -55,6 +58,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Controller
 public class BoardController {
@@ -499,11 +505,46 @@ public class BoardController {
 		
 	}
 	
-	@RequestMapping(value="/join", method = RequestMethod.POST)
+	@RequestMapping(value="/join2", method = RequestMethod.POST)
 	public String joinForm(UserDTO udto) throws Exception{
+		//암복호화 진행
+		
+		String password = udto.getMemberPw();
+		password = StringUtil.encryptPassword(password);
+		udto.setMemberPw(password);
+		
 		userService.insertUser(udto);
 		System.out.println(udto.getMemberName());
+		System.out.println(udto.getMemberPw());
 		return "redirect:/login";
+	}
+	
+	@RequestMapping(value="/join", method = RequestMethod.POST)
+	public ResponseEntity<String> joinForm2(@ModelAttribute UserDTO udto, 
+			HttpServletRequest request,HttpServletResponse response) throws Exception{
+		//암복호화 진행
+		
+		String password = udto.getMemberPw();
+		password = StringUtil.encryptPassword(password);
+		udto.setMemberPw(password);
+		
+		//response.setContentType("text/html; charset=UTF-8");
+		//request.setCharacterEncoding("utf-8");
+		String message = "";
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=UTF-8");
+		try {
+			
+			userService.insertUser(udto);
+			message  = "<script>";
+			message +=" alert('회원가입되었습니다.');";
+			message += " location.href='"+request.getContextPath()+"/login';";
+			message += " </script>";
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	
+		return new ResponseEntity<String>(message, responseHeaders, HttpStatus.OK);
 	}
 	
 	
@@ -523,7 +564,19 @@ public class BoardController {
 		
 		ModelAndView mv = new ModelAndView();
 		UserDTO userDTO = new UserDTO();
-
+		//먼저 loginMap 수정해야함
+		String password = loginMap.get("memberPw");
+		
+		
+		try {
+			password = StringUtil.encryptPassword(password);
+			loginMap.put("memberPw", password);
+		} catch (Exception e) {
+			e.printStackTrace();
+			e.getMessage();
+			
+		}
+		
 		userDTO = userService.login(loginMap);
 		if(userDTO != null) {
 			HttpSession session = request.getSession();
@@ -532,11 +585,12 @@ public class BoardController {
 			mv.setViewName("redirect:/boardList");
 			
 		}else {
-			mv.addObject("message","로그인에 실패하였습니다.");
+			mv.addObject("message","false");
 			mv.setViewName("redirect:/login");
+			
 		}
 		
-		System.out.println(userDTO.getMemberName());
+		
 		
 		return mv;
 		
@@ -570,6 +624,7 @@ public class BoardController {
 	
 	@RequestMapping(value="/userHistory", method = RequestMethod.GET)
 	public ModelAndView userHistory(@RequestParam Map<String, String> dataMap) {
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("/user/history");
 		
@@ -618,12 +673,38 @@ public class BoardController {
 		mv.addObject("userList", userList);
 		
 		return mv;
-				
+
+		
+	}
+	/*
+	@RequestMapping(value = "/boardInfo")
+	public String boardInfo2(@RequestParam("num") int num, Model model) throws Exception {
+		BoardDTO bdto = boardService.selectOne(num);
+		model.addAttribute("bdto", bdto);
+		return "board/bInfo";
+	}*/
+	
+	@RequestMapping("/myPageMain.do")
+	public ModelAndView userDetail(@RequestParam(required = false, value="message")String message, HttpServletRequest request) throws Exception{
+		
+		ModelAndView mv = new ModelAndView();
+		HttpSession session = request.getSession();
+		
+		session = request.getSession();
+		UserDTO userDTO = new UserDTO();
+		userDTO = (UserDTO)session.getAttribute("userDTO");
+		String userId = null;
+		if(userDTO!=null) userId = userDTO.getMemberId();
+		mv.addObject("memberInfo", userService.userDetail(userId));
+		mv.setViewName("/user/detail");
 		
 		
 		
 		
 		
+		
+		
+		return mv;
 		
 		
 	}

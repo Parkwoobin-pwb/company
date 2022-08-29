@@ -121,19 +121,28 @@
 					USER
 			WHERE
 					REG_DATE  BETWEEN #{beginDate} AND #{endDate}
-					<if test="search_type != null and search_type == 'all' " >
+					<if test="search_word == '' and search_type == 'all' " >
 						AND MEMBER_NAME LIKE  CONCAT('%', #{search_word}, '%')
 						OR MEMBER_ID LIKE CONCAT('%', #{search_word}, '%')
 					</if>
 					
-					<if test="search_type != null and search_type == 'memberName' ">
+					<if test="search_word != null and search_type == 'memberName' ">
 						AND MEMBER_NAME LIKE CONCAT('%', #{search_word}, '%')
 					</if>
-					<if test="search_type != null and search_type == 'memberId' ">
+					<if test="search_word != null and search_type == 'memberId' ">
 						AND MEMBER_ID LIKE CONCAT('%', #{search_word}, '%')
 					</if>
 			ORDER BY
 					REG_DATE DESC
+	</select>
+	
+	<select id="selectOneUser" parameterType="String" resultType="com.spring.board.dto.UserDTO">
+		SELECT
+				*
+		FROM
+				USER
+		WHERE
+				MEMBER_ID =#{memberId}
 	</select> 
 
 

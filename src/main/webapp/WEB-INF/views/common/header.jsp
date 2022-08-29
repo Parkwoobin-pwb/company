@@ -2,6 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>    
  <!-- 타일즈를 사용하기 위해 반드시 추가 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -25,7 +26,8 @@
 		           <c:when test="${isLogin==true and not empty userDTO }">
 		           		<span class="user"><b>${userDTO.memberId }</b>님 로그인 중</span>&nbsp;
 			   			<li><a href="logout.do">로그아웃</a></li>
-			   			<li><a href="${contextPath}/mypage/myPageMain.do">마이페이지</a></li>
+			   			<!--  <li><a href="${contextPath}/myPageMain.do?${userDTO.memberId}">마이페이지</a></li>-->
+			   			<li><a href="myPageMain.do">마이페이지</a></li>
 			 	   </c:when>
 		           <c:otherwise>
 					    <li class="nav-item">
