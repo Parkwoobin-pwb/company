@@ -10,7 +10,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
-	        <a class="navbar-brand" href="boardList">Woobin Board</a>
+	        <a class="navbar-brand" href="${pageContext.request.contextPath}/boardList">Woobin Board</a>
 	        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
 	          <span class="navbar-toggler-icon"></span>
 	        </button>
@@ -21,11 +21,13 @@
 		               <li class="nav-item">
 		               		<span class="user"><b>${userDTO.memberId }</b>님 로그인 중</span>&nbsp;
 		               </li>
-		               <li><a href="logout.do">로그아웃</a></li>
+		               <li><a href="${pageContext.request.contextPath}/logout.do">로그아웃</a></li>&nbsp;&nbsp;
+		               <li><a href="${pageContext.request.contextPath}/admin/userHistory">유저조회</a></li>&nbsp;&nbsp;
+		               <li><a href="${pageContext.request.contextPath}/admin/goodsInsert">상품등록</a></li>&nbsp;&nbsp;
 		           </c:when>
 		           <c:when test="${isLogin==true and not empty userDTO }">
 		           		<span class="user"><b>${userDTO.memberId }</b>님 로그인 중</span>&nbsp;
-			   			<li><a href="logout.do">로그아웃</a></li>
+			   			<li><a href="logout.do">로그아웃</a></li>&nbsp;&nbsp;
 			   			<!--  <li><a href="${contextPath}/myPageMain.do?${userDTO.memberId}">마이페이지</a></li>-->
 			   			<li><a href="myPageMain.do">마이페이지</a></li>
 			 	   </c:when>
@@ -38,10 +40,7 @@
 	               		</li>  
 	               		<li class="nav-item">
 	                 		<a class="nav-link" href="login">로그인</a>
-	               		</li>  
-	               		<li class="nav-item">
-	                 		<a class="nav-link" href="userHistory">유저조회</a>
-	               		</li>  
+	               		</li>    
 					 </c:otherwise>
 				</c:choose> 
 		           

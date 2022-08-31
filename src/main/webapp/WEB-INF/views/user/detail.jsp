@@ -7,6 +7,14 @@
 <meta charset="utf-8">
 <script src="${contextPath}/resources/jquery/jquery-3.5.1.min.js"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
+<link href="${contextPath}/resources/css/styles.css" rel="stylesheet" />
+<script src="${contextPath}/resources/js/jquery-3.5.1.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
  <script>
  
     function execDaumPostcode() {
@@ -28,7 +36,6 @@
                 if (fullRoadAddr !== ''){
                     fullRoadAddr += extraRoadAddr;
                 }
-                document.getElementById('zipcode').value = data.zonecode; 
                 document.getElementById('roadAddress').value = fullRoadAddr;
                 document.getElementById('jibunAddress').value = data.jibunAddress;
 
@@ -88,7 +95,6 @@
 			var memberBirthY  = frm_mod_member.memberBirthY;
 			var memberBirthM  = frm_mod_member.memberBirthM;
 			var memberBirthD  = frm_mod_member.memberBirthD;
-			var memberBirthGn = frm_mod_member.memberBirthGn;
 			
 			for (var i=0; memberBirthY.length;i++){
 			 	if (memberBirthY[i].selected){
@@ -110,13 +116,8 @@
 				} 
 			}
 			
-			for (var i=0; memberBirthGn.length;i++){
-			 	if (memberBirthGn[i].checked){
-					value_gn = memberBirthGn[i].value;
-					break;
-				} 
-			}
-			value = value_y + "," + value_m + "," + value_d + "," + value_gn;
+		
+			value = value_y + "," + value_m + "," + value_d;
 		}
 		else if (attribute == 'tel'){
 			var tel1 = frm_mod_member.tel1;
@@ -147,10 +148,9 @@
 			}
 			value_hp2 = hp2.value;
 			value_hp3 = hp3.value;
-			if (smsstsYn.checked)	value_smsstsYn = "Y";
-			else					value_smsstsYn = "N";
+
 			
-			value = value_hp1 + "," + value_hp2 + ", " + value_hp3 + "," + value_smssts_yn;
+			value = value_hp1 + "," + value_hp2 + ", " + value_hp3 ;
 		}
 		else if (attribute == 'email') {
 			var email1 = frm_mod_member.email1;
@@ -159,22 +159,21 @@
 			
 			value_email1 = email1.value;
 			value_email2 = email2.value;
-			if (emailstsYn.checked)	value_emailstsYn = "Y";
-			else					value_emailstsYn = "N";
-			value = value_email1 + "," + value_email2 + "," + value_emailsts_yn;
+			
+			value = value_email1 + "," + value_email2 ;
 			
 		}
 		else if (attribute == 'address'){
-			var zipcode       = frm_mod_member.zipcode;
+			
 			var roadAddress   = frm_mod_member.roadAddress;
 			var jibunAddress  = frm_mod_member.jibunAddress;
 			var namujiAddress = frm_mod_member.namujiAddress;
 			
-			value_zipcode       = zipcode.value;
+			
 			value_roadAddress   = roadAddress.value;
 			value_jibunAddress  = jibunAddress.value;
 			value_namujiAddress = namujiAddress.value;
-			value = value_zipcode + "," + value_roadAddress + "," + value_jibunAddress + "," + value_namujiAddress;
+			value = value_roadAddress + "," + value_jibunAddress + "," + value_namujiAddress;
 		}
 	 	
 		$.ajax({
@@ -194,6 +193,9 @@
 </head>
 
 <body>
+	<div>
+	  	<c:import url="/header.do"/>
+	</div>
 	<h3>내 상세 정보</h3>
 	<form name="frm_mod_member">	
 		<table class="table table-bordered table-hover">
@@ -280,18 +282,6 @@
 					</select>일 
 					
 					   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					   <c:choose>
-					    <c:when test="${memberInfo.memberBirthGn=='2' }"> 
-					  <input type="radio" name="memberBirthGn" value="2" checked /> 양력
-						&nbsp;&nbsp;&nbsp; 
-						<input type="radio"  name="memberBirthGn" value="1" /> 음력
-						</c:when>
-						<c:otherwise>
-						  <input type="radio" name="memberBirthGn" value="2" /> 양력
-						   &nbsp;&nbsp;&nbsp; 
-						<input type="radio"  name="memberBirthGn" value="1" checked  /> 음력
-						</c:otherwise>
-						</c:choose>
 					</td>
 					<td>
 					  <input type="button" value="수정" class="btn btn-outline-primary btn-sm"  onClick="fn_modify_member_info('memberBirth')" />
@@ -343,16 +333,6 @@
 					 - <input type="text" name="hp2" class="form-control" value="${memberInfo.hp2 }" style="display:inline; width:70px; padding:0"> 
 					 - <input type="text"name="hp3" class="form-control" value="${memberInfo.hp3 }" style="display:inline; width:70px; padding:0"><br>
 					 <br>
-					 <c:choose> 
-					   <c:when test="${memberInfo.smsstsYn eq 'Y' }">
-					     <input type="checkbox" class="custom-control-input" name="smsstsYn" id="smsstsYn" value="Y" checked /> 
-					     <label for="smsstsYn" >BMS에서 발송하는 SMS 소식을 수신합니다.</label>
-						</c:when>
-						<c:otherwise>
-						  <input type="checkbox" class="custom-control-input" name="smsstsYn" id="smsstsYn" value="N"  /> 
-						  <label for="smsstsYn" >BMS에서 발송하는 SMS 소식을 수신합니다.</label>
-						</c:otherwise>
-					 </c:choose>	
 				    </td>
 					<td>
 					  <input type="button" value="수정" class="btn btn-outline-primary btn-sm"  onClick="fn_modify_member_info('hp')" />
@@ -388,7 +368,7 @@
 				<tr>
 					<td align="center">주소</td>
 					<td>
-					   <input type="text" id="zipcode" name="zipcode" class="form-control"  value="${memberInfo.zipcode }" size="70px" style="display:inline; width:150px; padding:0"> 
+					    
 					    <input type="button" class="btn btn-outline-primary btn-sm" onclick="javascript:execDaumPostcode()" value="검색">
 					  <br><br>
 					  <p> 
@@ -405,9 +385,7 @@
 		</table>
 		<p align="right">
 			<input type="hidden" name="command"  value="modify_my_info" /> 
-			  <!--<c:if test="${memberInfo.delYn == 'N' }">
-			    <input type="button" value="회원탈퇴" class="btn btn-danger btn-sm"  onClick="fn_delete_member('${memberInfo.memberId}','Y')">
-			  </c:if>-->
+			 
 		</p>
 	</form>
 </body>

@@ -695,7 +695,7 @@ public class BoardController {
 		userDTO = (UserDTO)session.getAttribute("userDTO");
 		String userId = null;
 		if(userDTO!=null) userId = userDTO.getMemberId();
-		mv.addObject("memberInfo", userService.userDetail(userId));
+		mv.addObject("memberInfo", userDTO);
 		mv.setViewName("/user/detail");
 		
 		
