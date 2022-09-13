@@ -700,14 +700,78 @@ public class BoardController {
 		
 		
 		
-		
-		
-		
-		
 		return mv;
 		
 		
 	}
+	
+	
+	@RequestMapping(value="modifyMyInfo.do", method = RequestMethod.POST)
+	public ResponseEntity<String> modiftInfo(@RequestParam() String attribute,
+			@RequestParam() String value,
+			HttpServletRequest request) throws Exception{
+				
+		Map<String,String> memberMap = new HashMap<String, String>();
+		HttpSession session = request.getSession();
+		UserDTO userDTO = new UserDTO();
+		userDTO = (UserDTO) session.getAttribute("userDTO");
+		
+		String val[] = null;
+		String userId= userDTO.getMemberId();
+		
+		if(attribute.equals("memberPw")) {
+			memberMap.put("memberPw", StringUtil.encryptPassword(value));
+		}
+		else if(attribute.equals("memberBirth")){
+			
+			val = value.split(",");
+			memberMap.put("memberBirthY", val[0]);
+			memberMap.put("memberBirthM", val[1]);
+			memberMap.put("memberBirthD", val[2]);
+			
+
+		}
+		else if(attribute.equals("tel")) {
+			val = value.split(",");
+			memberMap.put("tel1", val[0]);
+			memberMap.put("tel2", val[1]);
+			memberMap.put("tel3", val[3]);
+		}
+		
+		else if(attribute.equals("hp")) {
+			val = value.split(",");
+			memberMap.put("hp1", val[0]);
+			memberMap.put("hp2", val[1]);
+			memberMap.put("hp3", val[3]);
+		}
+		else if(attribute.equals("email")) {
+			val = value.split(",");
+			memberMap.put("email1", val[0]);
+			memberMap.put("email2", val[1]);
+			memberMap.put("email3", val[2]);
+		}
+		else if(attribute.equals("address")) {
+			val = value.split(",");
+			memberMap.put("roadAddress", val[0]);
+			memberMap.put("jibunAddress", val[1]);
+			memberMap.put("namujiAddress", val[2]);
+		}
+		else {
+			memberMap.put(attribute, value);
+		}
+		
+		memberMap.put("memberId", userId);
+		
+		userDTO = (UserDTO)userService.updateMyInfo(memberMap);
+		session.removeAttribute("memberInfo");//기존 세션 삭제
+		session.setAttribute("memberInfo", userDTO);
+		
+		return new ResponseEntity<String>("modSuccess", new HttpHeaders(), HttpStatus.OK);
+		
+		
+		
+	}
+			
 	
 
 }

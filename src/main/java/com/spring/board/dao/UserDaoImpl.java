@@ -57,4 +57,18 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectOne("com.spring.mapper.userMapper.selectOneUser", userId);
 	}
 
+
+	@Override
+	public List<UserDTO> userExcell(Map<String, String> map) throws Exception {
+		
+		return sqlSession.selectList("com.spring.mapper.userMapper.selectUserList", map);
+	}
+
+
+	@Override
+	public void updateMyInfo(Map<String, String> map) throws Exception {
+		sqlSession.selectOne("com.spring.mapper.userMapper.uddateMyInfo", map);
+		
+	}
+
 }

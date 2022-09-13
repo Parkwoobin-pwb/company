@@ -178,13 +178,16 @@
 	 	
 		$.ajax({
 			type : "post",
-			url : "${contextPath}/mypage/modifyMyInfo.do",
+			url : "${contextPath}/modifyMyInfo.do",
 			data : {
 				attribute : attribute,
 				value     : value,
 			},
 			success : function() {
 				alert("회원 정보를 수정했습니다.");
+			},
+			error : function(request, status,error) {
+				alert("code = "+request.status+"message"+request.responseText+"error"+error)
 			}
 		}); 
 	}
@@ -232,7 +235,7 @@
 					<td align="center">성별</td>
 					<td>
 				   	  <input type="radio" name="memberGender" class="custom-control-input" value="101" <c:if test="${memberInfo.memberGender eq '101' }">checked </c:if> />
-				   	  <label class="custom-control-label" for="g1">남성</label>&emsp;&emsp;&emsp;
+				   	 &emsp;&emsp;<label class="custom-control-label" for="g1">남성</label>&emsp;&emsp;&emsp;
 				      <input type="radio" name="memberGender" class="custom-control-input" value="102" <c:if test="${memberInfo.memberGender eq '102' }">checked </c:if> />
 					  <label class="custom-control-label" for="g2">여성</label>
 					</td>
@@ -244,7 +247,7 @@
 					<td align="center">생년월일</td>
 					<td>
 					   <select class="form-control" name="memberBirthY" style="display:inline; width:70px; padding:0">
-					     <c:forEach var="i" begin="1" end="100">
+					     <c:forEach var="i" begin="1" end="102">
 					       <c:choose>
 					         <c:when test="${memberInfo.memberBirthY==1920+i }">
 							   <option value="${ 1920+i}" selected>${ 1920+i} </option>
@@ -350,16 +353,6 @@
 						 <option value="daum.net" <c:if test="${email3 eq 'daum.net'}"> selected</c:if>>daum.net</option>
 						 <option value="nate.com" <c:if test="${email3 eq 'nate.com'}"> selected</c:if>>nate.com</option>
 					</select><br><br>  
-					<c:choose> 
-					   <c:when test="${memberInfo.emailstsYn eq 'Y' }">
-					     <input type="checkbox" class="custom-control-input" name="emailstsYn" id="emailstsYn" value="Y" checked /> 
-					     <label for="emailstsYn">BMS에서 발송하는 e-mail을 수신합니다.</label>
-						</c:when>
-						<c:otherwise>
-						  <input type="checkbox" class="custom-control-input" name="emailstsYn" id="emailstsYn" value="N"  />
-						  <label for="emailstsYn">BMS에서 발송하는 e-mail을 수신합니다.</label>
-						</c:otherwise>
-					 </c:choose>
 					</td>
 					<td>
 					  <input type="button" value="수정" class="btn btn-outline-primary btn-sm"  onClick="fn_modify_member_info('email')" />
@@ -383,9 +376,16 @@
 					</td>
 				</tr>
 		</table>
-		<p align="right">
+		<p align="center">
 			<input type="hidden" name="command"  value="modify_my_info" /> 
-			 
+			<c:choose>
+			  <c:when test="${memberInfo.delYn == 'Y' }">
+			    <input type="button" value="회원복원" class="btn btn-primary btn-sm"  onClick="fn_delete_member('${memberInfo.memberId }','N')">   
+			  </c:when>
+			  <c:when test="${memberInfo.delYn == 'N' }">
+			    <input type="button" value="회원탈퇴" class="btn btn-danger btn-sm"  onClick="fn_delete_member('${memberInfo.memberId }','Y')">
+			  </c:when>
+			</c:choose>
 		</p>
 	</form>
 </body>

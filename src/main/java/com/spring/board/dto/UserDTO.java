@@ -30,8 +30,15 @@ public class UserDTO {
 	private String namujiAddress;
 	private Date regDate;
 	private String userType;
+	private String delYn;
 	
 	
+	public String getDelYn() {
+		return delYn;
+	}
+	public void setDelYn(String delYn) {
+		this.delYn = delYn;
+	}
 	public String getUserType() {
 		return userType;
 	}

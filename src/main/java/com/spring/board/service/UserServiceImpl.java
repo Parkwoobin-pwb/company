@@ -76,4 +76,20 @@ public class UserServiceImpl implements UserService{
 		return userDao.userDetail(userId);
 	}
 
+
+	@Override
+	public List<UserDTO> userExcell(Map<String, String> map) throws Exception {
+		
+		return userDao.userExcell(map);
+	}
+
+
+	@Override
+	public UserDTO updateMyInfo(Map<String, String> map) throws Exception {
+		String memberId = map.get("memberId");
+		userDao.updateMyInfo(map);
+		return userDao.userDetail(memberId);
+		
+	}
+
 }

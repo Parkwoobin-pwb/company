@@ -15,4 +15,6 @@ public interface UserService {
 		public int checkId(String id)throws Exception;
 		public List<UserDTO> userHistory (Map<String, Object> condMap) throws DataAccessException;
 		public UserDTO userDetail(String userId) throws Exception;
+		public List<UserDTO> userExcell(Map<String, String> map) throws Exception;
+		public UserDTO updateMyInfo(Map<String, String>map) throws Exception;
 }

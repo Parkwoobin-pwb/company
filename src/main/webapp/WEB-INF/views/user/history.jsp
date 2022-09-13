@@ -235,6 +235,10 @@
 		</table>
 	</form>
 	
+	
+     <p><input class="btn btn-outline-info btn-sm" type="button" value="excelPort" onclick="location.href='${contextPath}/admin/memberExport'"></p>
+    
+    
 	<div class="userList">
 		<table class="table">
 			<thead class='thead-dark' class="form-controll">

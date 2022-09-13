@@ -21,5 +21,7 @@ public interface UserDao {
 	public int chekckId(String id) throws Exception;
 	public List<UserDTO> userHistory(Map<String, Object> condMap) throws DataAccessException;
 	public UserDTO userDetail(String userId) throws Exception;
+	public List<UserDTO> userExcell(Map<String,String> map)throws Exception;
+	public void updateMyInfo(Map<String, String> map) throws Exception;
 	
 }
