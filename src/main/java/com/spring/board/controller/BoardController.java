@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -41,6 +42,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UrlPathHelper;
 
+
 import com.mysql.cj.Session;
 import com.spring.board.dto.BoardDTO;
 import com.spring.board.dto.CommonUtil;
@@ -57,10 +59,14 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+//자바 보고서
+
 
 @Controller
 public class BoardController {
@@ -381,6 +387,8 @@ public class BoardController {
 		//워크북 생성
 		Workbook wb = new HSSFWorkbook();
 		Sheet sheet = wb.createSheet();
+		Sheet shee2 = wb.createSheet();
+		
 		Row row = null;
 		Cell cell = null;
 		
@@ -460,6 +468,66 @@ public class BoardController {
 		for(int i =0; i < boardService.selectBoardList(condMap).size(); i++) {
 			sheet.autoSizeColumn(i);
 		}
+		
+		
+		
+		
+		//2페이지
+		// 테이블 헤더용 스타일
+		shee2.setDefaultColumnWidth(7);//시트전체 기본 너비설정
+		shee2.setColumnWidth(4, 2100); // 특정 cell설정 
+		shee2.setColumnWidth(7, 3400); // 특정 cell설정 
+		
+		
+		CellStyle headStyle2 = wb.createCellStyle();
+		Font font = wb.createFont();
+		font.setFontName("바탕");
+		font.setFontHeight((short)260);
+		font.setBold(true);
+		
+		headStyle2.setFont(font);
+		//가는 경계선
+		headStyle2.setBorderTop(BorderStyle.THIN);
+		headStyle2.setBorderBottom(BorderStyle.THIN);
+		headStyle2.setBorderLeft(BorderStyle.THIN);
+		headStyle2.setBorderRight(BorderStyle.THIN);
+		
+		//노란색배경
+		headStyle2.setFillForegroundColor(HSSFColorPredefined.BLUE_GREY.getIndex());
+		headStyle2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		
+		//가운데 정렬
+		headStyle2.setAlignment(HorizontalAlignment.CENTER);
+		
+		//데이터용 경계 스타일 테두리만 지정
+		CellStyle bodyStyle2 = wb.createCellStyle();
+		bodyStyle2.setAlignment(HorizontalAlignment.CENTER);
+		bodyStyle2.setBorderTop(BorderStyle.MEDIUM);
+		bodyStyle2.setBorderBottom(BorderStyle.MEDIUM);
+		bodyStyle2.setBorderRight(BorderStyle.MEDIUM);
+		bodyStyle2.setBorderLeft(BorderStyle.MEDIUM);
+		
+		rowNo = 0;
+		//헤더 생성
+		row = shee2.createRow(rowNo++); 
+		cell = row.createCell(0);
+		cell.setCellStyle(headStyle2);
+		cell.setCellValue("넘버");
+		cell = row.createCell(1);
+		cell.setCellStyle(headStyle2);
+		cell.setCellValue("작성자");
+		cell = row.createCell(2);
+		cell.setCellStyle(headStyle2);
+		cell.setCellValue("이메일");
+		cell = row.createCell(3);
+		cell.setCellStyle(headStyle2);
+		cell.setCellValue("제목");
+		cell = row.createCell(4);
+		cell.setCellStyle(headStyle2);
+		cell.setCellValue("날짜");
+		cell = row.createCell(5);
+		cell.setCellStyle(headStyle2);
+		cell.setCellValue("내용");
 		
 		
 		response.setContentType("ms-vnd/excel");
@@ -693,8 +761,8 @@ public class BoardController {
 		session = request.getSession();
 		UserDTO userDTO = new UserDTO();
 		userDTO = (UserDTO)session.getAttribute("userDTO");
-		String userId = null;
-		if(userDTO!=null) userId = userDTO.getMemberId();
+		//String userId = null;
+		//if(userDTO!=null) userId = userDTO.getMemberId();
 		mv.addObject("memberInfo", userDTO);
 		mv.setViewName("/user/detail");
 		
@@ -721,6 +789,9 @@ public class BoardController {
 		
 		if(attribute.equals("memberPw")) {
 			memberMap.put("memberPw", StringUtil.encryptPassword(value));
+		}
+		else if(attribute.equals("memberName")) {
+			memberMap.put("memberName", value);
 		}
 		else if(attribute.equals("memberBirth")){
 			
@@ -771,7 +842,7 @@ public class BoardController {
 		
 		
 	}
-			
+	
 	
 
 }

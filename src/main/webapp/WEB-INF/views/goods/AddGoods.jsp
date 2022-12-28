@@ -4,15 +4,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link href="${contextPath }/resources/css/myStyle.css" rel="stylesheet" />
+<meta charset="utf-8">
+<script>
+	var cnt = 0;
+	
+	function fn_addFile(){
+		
+		if (cnt == 0) $("#target_add_file").append("<br>"+"<input  type='file' name='main_image' id='f_main_image' />");	  
+		else 		  $("#target_add_file").append("<br>"+"<input  type='file' name='detail_image"+cnt+"' />");
+		cnt++;
+		
+	}
+</script>
+<title>관리자 상품등록</title>
+<link href="${contextPath}/resources/css/myStyle.css" rel="stylesheet" />
 <script src="${contextPath}/resources/jQuery/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="/resource/js/bootstrap.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <!-- CK에디터 설정하는것 -->
-<script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
-<script src="${contextPath}/resources/ckeditor/ckeditor.js"></script> 
+<!-- <script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script> -->
+<script src="${contextPath}/resources/ckeditor/ckeditor.js"></script>
+<style>
+	td:first-child {
+		text-align: center;
+		font-weight: bold;
+	}
+</style>
 </head>
 <body>
 	<div>
@@ -104,7 +120,7 @@
 			<div class="tab_content" id="tab2">
 				<div class="form-group">
 					<textarea rows="50" cols="80" class="form-control" id="goodsContentsOrder" name="goodsContentsOrder"></textarea>
-			    	<script>
+			    	<!-- <script>
 							var editor = CKEDITOR.replace('goodsContentsOrder',{
 								language:'ko',
 				              	height:'600px',
@@ -113,7 +129,8 @@
 				                  cloudServices_tokenUrl:'',
 				                  cloudServices_uploadUrl:''
 							});
-						</script>
+						</script> -->
+						<script>CKEDITOR.replace('goodsContentsOrder');</script>
 			    </div>
 			</div>
 			<div class="tab_content" id="tab3">

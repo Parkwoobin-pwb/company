@@ -179,6 +179,10 @@
 	 		<if test="memberPw != '' and meberPw != null">
 	 			MEMBER_PW = #{memberPw},
 	 		</if>
+	 		<if test="memberName != '' and memberName != null">
+	 			MEMBER_NAME = #{memberName},
+	 		</if>
+	 		
 	 		<if test="memberBirthY != '' and memberBirthY != null">
 			    MEMBER_BIRTH_Y = #{memberBirthY},
 			</if>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!--mapper임을 명시하기 위한 DTD 선언 -->
+		
+<!-- namespace 항상 고유해야함 -->		
+<mapper namespace="com.spring.mapper.noticeMapper">
+	
+	
+	<!-- 공지사항 등록 쿼리 -->
+	<insert id="insertNotice" parameterType="com.spring.board.dto.NoticeDTO">
+		INSERT INTO
+			NOTICE_TEST
+		VALUES(
+			(SELECT
+					IFNULL(MAX(NT_ID)+1,1)
+				FROM
+					NOTICE_TEST AS U),
+			#{adminGroupId},
+			#{adminId},
+			#{ntTitle},
+			#{ntContent},
+			now()
+		)
+	
+	</insert>
+	
+	<select id="noticeDuplicate" parameterType="com.spring.board.dto.NoticeDTO" resultType="int">
+		SELECT
+				COUNT(*)
+		FROM
+				NOTICE_TEST
+		WHERE
+				NT_TITLE =#{ntTitle}
+	
+	</select>
+	
+	<select id="selectNoticeList" parameterType="com.spring.board.dto.NoticeDTO" resultType="com.spring.board.dto.NoticeDTO">
+		SELECT
+				*
+		FROM
+				NOTICE_TEST
+		WHERE
+			ADMIN_GROUP_ID =#{adminGroupId}
+			 <if test="search_text != null and search_text != ''">
+		  		AND NT_TITLE LIKE '%${search_text}%'
+			 </if> 
+
+		ORDER BY NT_REGDATE DESC
+		
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+				
+	</select>
+	
+	
+	<select id="selectNoticeListTotal" parameterType="com.spring.board.dto.NoticeDTO" resultType="Integer">
+		SELECT COUNT(*) 
+		  FROM NOTICE_TEST
+		 WHERE
+		 	ADMIN_GROUP_ID =#{adminGroupId}
+		<if test="search_text != null and search_text != ''">
+		    AND NT_TITLE LIKE '%${search_text}%'
+		</if>
+		
+	</select>
+	
+	<select id="selectNoticeDetail" parameterType="com.spring.board.dto.NoticeDTO" resultType="com.spring.board.dto.NoticeDTO">
+		SELECT
+				*
+		FROM
+				NOTICE_TEST
+		WHERE
+				NT_ID =#{ntId}
+	
+	</select>
+
+</mapper>

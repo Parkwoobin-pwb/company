@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.MvcNamespaceHandler;
 
 import com.spring.board.dto.CommonUtil;
 import com.spring.board.dto.UserDTO;
@@ -46,9 +48,15 @@ public class AdminController {
 	private UserService userService;
 	
 	@RequestMapping("/goodsInsert")
-	public ModelAndView goodsInsert()throws Exception{
+	public ModelAndView goodsInsert(HttpServletRequest request)throws Exception{
+		UserDTO userDTO = (UserDTO) request.getSession().getAttribute("userDTO");
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("goods/AddGoods");
+		String type = userDTO.getUserType();
+		if(type.equals("A")) {
+			mv.setViewName("goods/AddGoods");
+			return mv;
+		}
+		mv.setViewName("redirect:/boardList");
 		return mv;
 	}
 	
