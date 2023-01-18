@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ 
+<mapper namespace= "com.spring.mapper.weather" >
+
+	<select id="selectWeatherList" parameterType="com.spring.board.dto.weatherVO" resultType="com.spring.board.dto.weatherVO">
+		SELECT	*
+		FROM	TB_WEATHER_INFO
+		<if test="admin_id != null and admin_id != ''">
+			AND	ADMIN_ID LIKE #{admin_id}
+		</if>
+		<if test="admin_group_id != null and admin_group_id != ''">
+			AND	ADMIN_GROUP_ID LIKE #{admin_group_id}
+		</if>
+	</select>
+
+	<select id="selectOneWeather" parameterType="com.spring.board.dto.weatherVO" resultType="com.spring.board.dto.weatherVO">
+		SELECT	*
+		FROM	TB_WEATHER_INFO
+		WHERE	1 = 1
+		<if test="admin_id != null and admin_id != ''">
+			AND	ADMIN_ID LIKE #{admin_id}
+		</if>
+		<if test="admin_group_id != null and admin_group_id != ''">
+			AND	ADMIN_GROUP_ID LIKE #{admin_group_id}
+		</if>
+	</select>
+	
+	<insert id="insertWeather" parameterType="com.spring.board.dto.weatherVO">
+		INSERT INTO TB_WEATHER_INFO
+		(
+			ADMIN_ID
+			,	ADMIN_GROUP_ID
+			<if test="lctn_nm != null and lctn_nm != ''">
+				,	LCTN_NM
+			</if>
+		)
+		VALUES
+		(
+			#{admin_id}
+			,	#{admin_group_id}
+			<if test="lctn_nm != null and lctn_nm != ''">
+				,	#{lctn_nm}
+			</if>
+		)
+	</insert>
+	
+	<update id="updateWeather" parameterType="com.spring.board.dto.weatherVO">
+		UPDATE	TB_WEATHER_INFO
+		SET		LG_DTTM = now()
+	    	<if test="lctn_nm != null and lctn_nm != ''">
+	    	, LCTN_NM = #{lctn_nm}
+	    	</if>
+			<if test="wthr_cd != null and wthr_cd != ''">
+			, WTHR_CD = #{wthr_cd}
+			</if>
+			<if test="wthr_vl != null and wthr_vl != ''">
+			, WTHR_VL = #{wthr_vl}
+			</if>
+			<if test="dst_cd != null and dst_cd != ''">
+			, DST_CD = #{dst_cd}
+			</if>
+			<if test="dst_vl != null and dst_vl != ''">
+			, DST_VL = #{dst_vl}
+			</if>
+			<if test="cr_tmp != null and cr_tmp != ''">
+			, CR_TMP = #{cr_tmp}
+			</if>
+			
+		WHERE	ADMIN_GROUP_ID = #{admin_group_id}
+		<if test="admin_id != null or admin_id != ''">
+			AND	ADMIN_ID = #{admin_id}
+		</if>
+	</update>
+	
+	<delete id="deleteWeather" parameterType="com.spring.board.dto.weatherVO">
+		DELETE
+		FROM	TB_WEATHER_INFO
+		WHERE	ADMIN_GROUP_ID = #{admin_group_id}
+		AND		ADMIN_ID = #{admin_id}
+	</delete>
+	
+</mapper>
