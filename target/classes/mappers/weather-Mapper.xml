@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectWeatherList" parameterType="com.spring.board.dto.weatherVO" resultType="com.spring.board.dto.weatherVO">
 		SELECT	*
-		FROM	TB_WEATHER_INFO
+		FROM	WEATHER_INFO
 		<if test="admin_id != null and admin_id != ''">
 			AND	ADMIN_ID LIKE #{admin_id}
 		</if>
@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectOneWeather" parameterType="com.spring.board.dto.weatherVO" resultType="com.spring.board.dto.weatherVO">
 		SELECT	*
-		FROM	TB_WEATHER_INFO
+		FROM	WEATHER_INFO
 		WHERE	1 = 1
 		<if test="admin_id != null and admin_id != ''">
 			AND	ADMIN_ID LIKE #{admin_id}
@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="insertWeather" parameterType="com.spring.board.dto.weatherVO">
-		INSERT INTO TB_WEATHER_INFO
+		INSERT INTO WEATHER_INFO
 		(
 			ADMIN_ID
 			,	ADMIN_GROUP_ID
@@ -48,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<update id="updateWeather" parameterType="com.spring.board.dto.weatherVO">
-		UPDATE	TB_WEATHER_INFO
+		UPDATE	WEATHER_INFO
 		SET		LG_DTTM = now()
 	    	<if test="lctn_nm != null and lctn_nm != ''">
 	    	, LCTN_NM = #{lctn_nm}
@@ -77,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<delete id="deleteWeather" parameterType="com.spring.board.dto.weatherVO">
 		DELETE
-		FROM	TB_WEATHER_INFO
+		FROM	WEATHER_INFO
 		WHERE	ADMIN_GROUP_ID = #{admin_group_id}
 		AND		ADMIN_ID = #{admin_id}
 	</delete>

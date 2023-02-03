@@ -199,7 +199,18 @@ public class BoardController {
 		return "redirect:/boardList";	
 	}
 	
-
+	
+	
+	/**
+	 * 
+	 * @param onePageViewCount
+	 * @param currentPageNumber
+	 * @param searchKeyword
+	 * @param searchWord
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/boardList")
 	public String boardList(@RequestParam(name = "onePageViewCount", defaultValue = "10") int onePageViewCount,
 			@RequestParam(name = "currentPageNumber", defaultValue = "1") int currentPageNumber,
@@ -377,6 +388,13 @@ public class BoardController {
 		return Integer.toString(result);
 	}
 	
+	
+	/**
+	 * 
+	 * @param response
+	 * @param dateMap
+	 * @throws Exception
+	 */
 	@RequestMapping(value="excelPort")
 	public void BoardListExport(HttpServletResponse response, @RequestParam Map<String, Object> dateMap)throws Exception{
 		SimpleDateFormat fileSdf = new SimpleDateFormat("yyyy_MM_dd_hh_mm");
@@ -627,6 +645,13 @@ public class BoardController {
 		return Integer.toString(result);
 	}
 	
+	
+	/**
+	 * 
+	 * @param loginMap
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value="/login.do", method= RequestMethod.POST)
 	public ModelAndView login(@RequestParam Map<String, String>loginMap, HttpServletRequest request) {
 		
@@ -664,6 +689,12 @@ public class BoardController {
 		
 	}
 	
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value="/logout.do" , method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request) throws Exception {
 		

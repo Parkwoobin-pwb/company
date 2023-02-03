@@ -118,7 +118,7 @@ public class NoticeContorller {
 	
 	
 	//@Scheduled(cron="* 2 * * * *")
-	@Scheduled(cron="0 53 15 * * *") 
+	@Scheduled(cron="0 11 16 * * *") 
 		public void updateWeather(){
 			whoAmi = Thread.currentThread().getStackTrace()[1].toString();
 			String api_url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"; 
@@ -170,22 +170,26 @@ public class NoticeContorller {
 	     	 	      //  System.out.println(result);
 	     	 	        
 	     	 	        // response 키를 가지고 데이터를 파싱
-	     	 	        JSONObject jsonObj_1 = new JSONObject(result);
+	     	 	        //JSONObject jsonObj_1 = new JSONObject(result);
+	     	 	        JSONObject jsonObj_1 = new JSONObject();
 	     	 	        String response = jsonObj_1.getString("response");
 
 	     	 	        // response 로 부터 body 찾기
-	     	 	        JSONObject jsonObj_2 = new JSONObject(response);
+	     	 	      //  JSONObject jsonObj_2 = new JSONObject(response);
+	     	 	        JSONObject jsonObj_2 = new JSONObject();
 	     	 	        String body = jsonObj_2.getString("body");
 
 	     	 	        // body 로 부터 items 찾기
-	     	 	        JSONObject jsonObj_3 = new JSONObject(body);
+	     	 	        //JSONObject jsonObj_3 = new JSONObject(body);
+	     	 	        JSONObject jsonObj_3 = new JSONObject();
 	     	 	        String items = jsonObj_3.getString("items");
 	     	 	       
 	     	 	        // items로 부터 itemlist 를 받기 
-	     	 	        JSONObject jsonObj_4 = new JSONObject(items);
+	     	 	        //JSONObject jsonObj_4 = new JSONObject(items);
+	     	 	        JSONObject jsonObj_4 = new JSONObject();
 	     	 	        JSONArray jsonArray = jsonObj_4.getJSONArray("item");
 	     	 	        
-	     	 	        for(int i=0;i < jsonArray.length();i++){
+	     	 	        for(int i=0;i < jsonArray.size();i++){
 	     	 	        	jsonObj_4 = jsonArray.getJSONObject(i);
 	     	 	        	String fcstValue = jsonObj_4.getString("fcstValue");
 	     	 	        	String category = jsonObj_4.getString("category");
